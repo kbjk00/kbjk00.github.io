@@ -37,6 +37,10 @@ def parse_categories(cat_text):
     cats = []
     for part in cat_text.split("/"):
         clean = strip_emoji(part).strip()
+        # 이모지가 ?로 대체된 경우 앞쪽 비문자 제거 (첫 한글/영문자부터 시작)
+        match = re.search(r"[A-Za-z\uAC00-\uD7A3]", clean)
+        if match:
+            clean = clean[match.start():]
         if clean:
             cats.append(clean)
     return cats
