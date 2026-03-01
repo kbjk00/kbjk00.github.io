@@ -1,0 +1,268 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>[모바일 애플리케이션 분석] 3주차 - 객체지향 프로그래밍</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">[모바일 애플리케이션 분석] 3주차 - 객체지향 프로그래밍</h2>
+                                <div class="box-info">
+                                    <p class="category">?️ Projects/? 모바일 분석</p>
+                                    <p class="date">2025-10-03 18:40:03</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p style="text-align: center;" data-ke-size="size16">이번 주차에는 객체지향 프로그래밍에 대해 배우고</p>
+<p style="text-align: center;" data-ke-size="size16">모바일 애플리케이션 워게임을 풀어보는 활동을 하였다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">객체지향 프로그래밍을 배워야 하는 이유</h2>
+<p><figure class="imageblock alignCenter" width="393" height="159" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img.png" width="393" height="159"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">Kotlin 은 JVM 기반의 언라서 Java 와 유사하다.</p>
+<p style="text-align: center;" data-ke-size="size16">Java 는 대표적인 객체지향 프로그래밍 언어이므로</p>
+<p style="text-align: center;" data-ke-size="size16">Kotlin 또한 객체지향 프로그래밍 언어이다.</p>
+<p style="text-align: center;" data-ke-size="size16">그래서 JADX 등으로 apk 를 분석하는 중에 많은 객체를 볼 것이다.</p>
+<p style="text-align: center;" data-ke-size="size16">그러므로 객체지향에 대해 배워야 분석을 할 때 이해가 더 잘 될 것이다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">절차적 프로그래밍</h2>
+<p style="text-align: center;" data-ke-size="size16">객체지향 프로그래밍을 배우기 전에 절차적 프로그래밍과 어떤 차이점이 있는지</p>
+<p style="text-align: center;" data-ke-size="size16">알아보기 위해서 절차적 프로그래밍에 대해서 먼저 설명하도록 하겠다.</p>
+<p style="text-align: center;" data-ke-size="size16">절차적 프로그래밍은 단순히 순차적인 명령 수행이 아니라</p>
+<p style="text-align: center;" data-ke-size="size16">함수, 메소드, 루틴 등의 프로시저를 이용한 프로그래밍 방법이다.</p>
+<p style="text-align: center;" data-ke-size="size16">영어로는 PP(Procedural Programming) 이라고 한다.</p>
+<p style="text-align: center;" data-ke-size="size16">예시로 온라인 도서 사이트를 프로그램으로 간단하게 표현하여 설명을 하겠다.</p>
+<div id="code_1759292893809" data-ke-type="html" data-source="&lt;pre&gt;&lt;code class=&quot;language-c&quot;&gt;
+//C언어
+
+#include &lt;stdio.h&gt;
+
+void kyobo_book_payment_service {
+	// 교보문고 결제
+}
+
+void yes24_book_payment_service {
+	// 예스24 결제
+}
+
+void aladin_book_payment_service {
+	// 알라딘 결제
+}
+
+int main() {
+    if (strcmp(bookstore, &quot;교보문고&quot;) == 0) {
+    	kyobo_book_payment_service();
+    else if (strcmp(bookstore, &quot;예스24&quot;) == 0) {
+    	yes24_book_payment_service();
+    else if (strcmp(bookstore, &quot;알라딘&quot;) == 0) {
+    	aladin_book_payment_service();
+    .
+    .
+    .
+    .
+    
+    
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;">
+<pre><code class="language-c">
+//C언어
+
+#include 
+
+void kyobo_book_payment_service {
+	// 교보문고 결제
+}
+
+void yes24_book_payment_service {
+	// 예스24 결제
+}
+
+void aladin_book_payment_service {
+	// 알라딘 결제
+}
+
+int main() {
+    if (strcmp(bookstore, "교보문고") == 0) {
+    	kyobo_book_payment_service();
+    else if (strcmp(bookstore, "예스24") == 0) {
+    	yes24_book_payment_service();
+    else if (strcmp(bookstore, "알라딘") == 0) {
+    	aladin_book_payment_service();
+    .
+    .
+    .
+    .
+    
+    
+    return 0;
+}
+</code></pre>
+</div>
+<p style="text-align: center;" data-ke-size="size16">이런 방식으로 프로그램을 제작하면 어떤 일이 있을까?</p>
+<p style="text-align: center;" data-ke-size="size16">일단 유지 보수가 어렵다.</p>
+<p style="text-align: center;" data-ke-size="size16">프로그램을 수정하려면 모든 함수를 수정해야 하고,</p>
+<p style="text-align: center;" data-ke-size="size16">가독성이 떨어진다.</p>
+<p style="text-align: center;" data-ke-size="size16">만약 다른 구매 사이트가 생긴다면 확장을 하기도 힘들다.</p>
+<p style="text-align: center;" data-ke-size="size16">이러한 단점들을 해소하기 위해</p>
+<p style="text-align: center;" data-ke-size="size16">객체지향 프로그래밍이라는 방식이 있다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<h2 style="text-align: left;" data-ke-size="size26">객체지향 프로그래밍</h2>
+<p style="text-align: center;" data-ke-size="size16">객체지향 프로그래밍은 객체들간의 상호작용을 통해 프로그램을 설계하고 개발하는 방식으로</p>
+<p style="text-align: center;" data-ke-size="size16">영어로는 OOP(Object Oriented Programming) 이라고 한다.</p>
+<p style="text-align: center;" data-ke-size="size16">객체지향에서는 데이터와 프로시저, 즉 자료형과 함수를 묶어서 관리할 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">예시로, 책이라는 객체를 만들었다면</p>
+<p style="text-align: center;" data-ke-size="size16">책 이름과 같은 자료형뿐만 아니라</p>
+<p style="text-align: center;" data-ke-size="size16">책 읽기, 감상평 적기 등과 같은 함수도 하나의 객체 안에 들어가는 것이 가능하다.</p>
+<p style="text-align: center;" data-ke-size="size16">객체지향을 설명하기 위해 객체지향이 가진 특징,</p>
+<p style="text-align: center;" data-ke-size="size16">추상화, 상속, 캡슐화, 다형성으로 설명할 수 있다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h3 data-ke-size="size23">추상화</h3>
+<p style="text-align: center;" data-ke-size="size16">객체들의 공통적인 기능, 속성 등을 추출해서 정의하는 것을 말한다.</p>
+<p style="text-align: center;" data-ke-size="size16">앞서 예시로 들었던 온라인 도서 사이트를 생각해보자.</p>
+<p><figure class="imageblock alignCenter" width="322" height="322" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_1.png" width="322" height="322"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">여러 사이트가 존재하지만 공통적으로 책 구매, 리뷰, 검색 등이 공통적으로 들어가있다.</p>
+<p style="text-align: center;" data-ke-size="size16">이러한 특징을 온라인 도서 사이트라는 하나의 클래스로 정의한 후,</p>
+<p style="text-align: center;" data-ke-size="size16">공통 특징을 추출하여 활용할 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">이때, 새로운 사이트를 추가하는 경우,</p>
+<p style="text-align: center;" data-ke-size="size16">처음부터 모든 것을 추가하는 것이 아니라</p>
+<p style="text-align: center;" data-ke-size="size16">공통 특징을 추상화로 구현했기 때문에</p>
+<p style="text-align: center;" data-ke-size="size16">추가할 부분만 만드는 것이 가능하다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h3 data-ke-size="size23">캡슐화</h3>
+<p style="text-align: center;" data-ke-size="size16">캡슐화는 관련이 있는 변수와 함수를 하나의 클래스로 묶고</p>
+<p style="text-align: center;" data-ke-size="size16">외부에서 접근할 수 없도록 감추는 것이다.</p>
+<p><figure class="imageblock alignCenter" width="360" height="360" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_2.png" width="360" height="360"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">예시로 우리가 알고 있는 캡슐 알약에 캡슐을 생각해보자.</p>
+<p style="text-align: center;" data-ke-size="size16">캡슐 안에 약이 어떤 성분인지는 모르지만,</p>
+<p style="text-align: center;" data-ke-size="size16">아는 것과 상관없이 알약을 복용할 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">프로그래밍에서는 객체를 손상시키지 못하도록</p>
+<p style="text-align: center;" data-ke-size="size16">세부적인 동작에 대한 구현을 감추는 것이다.</p>
+<p style="text-align: center;" data-ke-size="size16">클래스 앞에 private, public, protected 등의 키워드로 접근을 제어할 수 있다.</p>
+<table style="border-collapse: collapse; width: 100%;" border="1" data-ke-align="alignLeft">
+<tbody>
+<tr>
+<td style="width: 33.3333%; text-align: center;">private</td>
+<td style="width: 33.3333%; text-align: center;">public</td>
+<td style="width: 33.3333%; text-align: center;">protected</td>
+</tr>
+<tr>
+<td style="width: 33.3333%; text-align: center;">같은 클래스 내에서만 접근 가능</td>
+<td style="width: 33.3333%; text-align: center;">모든 클래스에서 접근가능<br /><br />※ 아무것도 삽입하지 않은 경우,<br />기본적으로 public 사용</td>
+<td style="width: 33.3333%; text-align: center;">상속 관계에서만 접근 가능</td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h3 data-ke-size="size23">상속</h3>
+<p style="text-align: center;" data-ke-size="size16">상속은 이미 정의된 상위 클래스의 모든 속성과 연산을 하위 클래스가 물려 받는 것을 말한다.</p>
+<p style="text-align: center;" data-ke-size="size16">기존 코드를 재활용하여 사용하기 때문에 코드의 생산성을 높힐 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">단순히 코드를 재활용하는 것이 아니라 기능의 확장 관점으로써 포함 관계에서만 사용해야 한다.</p>
+<p style="text-align: center;" data-ke-size="size16">상속을 너무 과도하게 사용하면 결합도가 매우 높아져 유지 보수가 어렵게 되기 때문이다.</p>
+<p style="text-align: center;" data-ke-size="size16">도서 사이트를 예시로 하면,</p>
+<p style="text-align: center;" data-ke-size="size16">도서 사이트라는 부모 클래스에서 한국에 있는 도서 사이트라는 집합을 만들고 싶어</p>
+<p style="text-align: center;" data-ke-size="size16">한국 도서 사이트라는 자식 클래스를 생성하는 것이다.</p>
+<p><figure class="imageblock alignCenter" width="249" height="247" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_3.png" width="249" height="247"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">이때 자식 클래스는 부모 클래스의 특징을 상속받는다.</p>
+<p style="text-align: center;" data-ke-size="size16">한국 도서 사이트라는 클래스는 부모 클래스와 마찬가지로</p>
+<p style="text-align: center;" data-ke-size="size16">책 사기, 리뷰, 검색 등이 가능하다는 말이다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h3 data-ke-size="size23">다형성</h3>
+<p style="text-align: center;" data-ke-size="size16">하나의 변수 또는 함수가 명령을 받았을 때,</p>
+<p style="text-align: center;" data-ke-size="size16">상황에 따라 서로 다른 방식으로 동작하는 것을 말한다.</p>
+<p style="text-align: center;" data-ke-size="size16">다시 말하자면 동일한 명령이라도 각자 연결된 객체의 의존해서 해석하는 것이다.</p>
+<p style="text-align: center;" data-ke-size="size16">대표적으로 메서드 오버로딩, 메서드 오버라이딩이 있다.</p>
+<table style="border-collapse: collapse; width: 100%;" border="1" data-ke-align="alignLeft">
+<tbody>
+<tr>
+<td style="width: 50%; text-align: center;">오버로딩</td>
+<td style="width: 50%; text-align: center;">오버라이딩</td>
+</tr>
+<tr>
+<td style="width: 50%; text-align: center;">같은 이름의 함수를 여러 개 정의한 후 매개 변수를 다르게 하여 같은 이름을 경우에 따라 호출하여 사용하는 방법</td>
+<td style="width: 50%; text-align: center;">부모클래스의 메서드와 같은 이름을 사용하며, 매개변수가 같지만 내부 소스를 재정의하여 사용하는 방법</td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: center;" data-ke-size="size16">아까 만들었던 한국 도서 사이트, 교보문고, 예스24가 있다고 해보자.</p>
+<p style="text-align: center;" data-ke-size="size16">같은 리뷰 기능이라도 그 안에 있는 점은 각자마다 조금씩 다르다.</p>
+<p><figure class="imageblock alignCenter" width="698" height="224" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_4.png" width="698" height="224"  />
+    </span>
+    <figcaption>교보문고의 인간실격 리뷰</figcaption>
+</figure><figure class="imageblock alignCenter" width="746" height="177" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_5.png" width="746" height="177"  />
+    </span>
+    <figcaption>예스24의 인간실격 리뷰</figcaption>
+</figure></p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">번외. 절차적? 절차지향?</h2>
+<p style="text-align: center;" data-ke-size="size16">자료를 찾아보면서 많을 글들을 볼 때 마다 헷갈리는 점이 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">절차적 프로그래밍과 절차지향 프로그래밍이라는 표현 중 어느 것이 맞는 표현일까?</p>
+<p style="text-align: center;" data-ke-size="size16">영문으로는 Procedural Programming 이라고 한다.</p>
+<p style="text-align: center;" data-ke-size="size16">Procedural 에 해당하는 프로시저를 절차, 절차적 등으로 번역하여</p>
+<p style="text-align: center;" data-ke-size="size16">순차적으로 진행되는 프로그래밍 방식이라고 오해가 생긴 것이다.</p>
+<p style="text-align: center;" data-ke-size="size16">절차를 중시하는 프로그래밍 방식이 아니라</p>
+<p style="text-align: center;" data-ke-size="size16">프로시저를 호출하는 프로그래밍 방식이다.</p>
+<p><figure class="imageblock alignCenter" width="690" height="271" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_6.png" width="690" height="271"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">따라서 절차지향이 아닌 절차적 프로그래밍이 옳은 표현이다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">후기</h2>
+<p style="text-align: center;" data-ke-size="size16">나는 여태까지 절차적 프로그래밍 방식을 사용하여 코딩을 해왔기 때문에</p>
+<p style="text-align: center;" data-ke-size="size16">객체지향 프로그래밍 방식으로 코딩을 해본 적이 없다.</p>
+<p style="text-align: center;" data-ke-size="size16">하지만 이번에 공부를 해보니 객체지향 프로그래밍 방식에</p>
+<p style="text-align: center;" data-ke-size="size16">유지 보수 등 여러 장점들이 있어 이 방식으로 코딩을 하고자 한다.</p>
+<p data-ke-size="size16">&nbsp;</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            #객체지향 #팀프로젝트 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

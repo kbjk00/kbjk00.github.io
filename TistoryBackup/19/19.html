@@ -1,0 +1,309 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>[모바일 애플리케이션 분석] 6주차 - UnCrackable Level 1 (Android)</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">[모바일 애플리케이션 분석] 6주차 - UnCrackable Level 1 (Android)</h2>
+                                <div class="box-info">
+                                    <p class="category">?️ Projects/? 모바일 분석</p>
+                                    <p class="date">2025-11-09 21:03:35</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p style="text-align: center;" data-ke-size="size16">이번 글은 저번에 배운 Frida 를 활용하여 문제를 풀어보는 시간이다.</p>
+<p style="text-align: center;" data-ke-size="size16">나는 UnCrackable Mobile Apps 라는 문제를 풀어보았다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">UnCrackable Mobile Apps</h2>
+<p style="text-align: center;" data-ke-size="size16">UnCrackable Mobile Apps 는 Android, iOS 를 위한 모바일 애플리케이션 리버싱 문제이다.</p>
+<p style="text-align: center;" data-ke-size="size16">다음 사이트에 접속하여 Android, iOS 디렉터리를 골라 문제를 풀 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16"><a href="https://github.com/OWASP/mastg/tree/master/Crackmes" target="_blank" rel="noopener&nbsp;noreferrer">https://github.com/OWASP/mastg/tree/master/Crackmes</a></p>
+<figure id="og_1762313383771" contenteditable="false" data-ke-type="opengraph" data-ke-align="alignCenter" data-og-type="object" data-og-title="mastg/Crackmes at master &middot; OWASP/mastg" data-og-description="The OWASP Mobile Application Security Testing Guide (MASTG) is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the OWA..." data-og-host="github.com" data-og-source-url="https://github.com/OWASP/mastg/tree/master/Crackmes" data-og-url="https://github.com/OWASP/mastg/tree/master/Crackmes" data-og-image="https://scrap.kakaocdn.net/dn/unqLU/hyZNfh6zwQ/Z1nXARnJFu9HnTMaYKYN0k/img.png?width=1200&amp;height=600&amp;face=0_0_1200_600,https://scrap.kakaocdn.net/dn/KqFpC/hyZM6yHxOG/08vjdF6l8cbmkNoNSlErN1/img.png?width=1200&amp;height=600&amp;face=0_0_1200_600"><a href="https://github.com/OWASP/mastg/tree/master/Crackmes" target="_blank" rel="noopener" data-source-url="https://github.com/OWASP/mastg/tree/master/Crackmes">
+<div class="og-image" style="background-image: url('https://scrap.kakaocdn.net/dn/unqLU/hyZNfh6zwQ/Z1nXARnJFu9HnTMaYKYN0k/img.png?width=1200&amp;height=600&amp;face=0_0_1200_600,https://scrap.kakaocdn.net/dn/KqFpC/hyZM6yHxOG/08vjdF6l8cbmkNoNSlErN1/img.png?width=1200&amp;height=600&amp;face=0_0_1200_600');">&nbsp;</div>
+<div class="og-text">
+<p class="og-title" data-ke-size="size16">mastg/Crackmes at master &middot; OWASP/mastg</p>
+<p class="og-desc" data-ke-size="size16">The OWASP Mobile Application Security Testing Guide (MASTG) is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the OWA...</p>
+<p class="og-host" data-ke-size="size16">github.com</p>
+</div>
+</a></figure>
+<p style="text-align: center;" data-ke-size="size16">나는 Android Studio 를 사용하고 있어서 Android 디렉터리 안에 있는 문제들을 풀었다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h3 style="text-align: left;" data-ke-size="size23">UnCrackable-Level1</h3>
+<p style="text-align: center;" data-ke-size="size16">먼저 apk 를 설치한 후 애플리케이션을 열어보았다.</p>
+<p><figure class="imageblock alignCenter" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img.png"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">루팅을 한 것을 감지하여, 경고문이 나왔다.</p>
+<p style="text-align: center;" data-ke-size="size16">OK 를 누르면, 애플리케이션이 종료된다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">다음으로 JADX 로 자세히 살펴보겠다.</p>
+<p><figure class="imageblock alignCenter" width="663" height="162" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_1.png" width="663" height="162"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">AndroidManifest.xml 파일로 들어가서 MainActivity 의 위치를 확인하였다.</p>
+<p style="text-align: center;" data-ke-size="size16">이 애플리케이션의 경우, MainActivity 의 경로는 sg.vantagepoint.uncrackable1.MainActivity 이다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1762606483859" class="java" data-ke-language="java" data-ke-type="codeblock"><code>protected void onCreate(Bundle bundle) {
+        if (c.a() || c.b() || c.c()) {
+            a("Root detected!");
+        }
+        if (b.a(getApplicationContext())) {
+            a("App is debuggable!");
+        }
+        super.onCreate(bundle);
+        setContentView(R.layout.activity_main);
+    }</code></pre>
+<p style="text-align: center;" data-ke-size="size16">onCreate() 함수에서 c.a(), c.b(), c.c() 3개를 확인하여 루팅을 탐지하는 것을 보인다.</p>
+<pre id="code_1762606567845" class="java" data-ke-language="java" data-ke-type="codeblock"><code>private void a(String str) {
+        AlertDialog alertDialogCreate = new AlertDialog.Builder(this).create();
+        alertDialogCreate.setTitle(str);
+        alertDialogCreate.setMessage("This is unacceptable. The app is now going to exit.");
+        alertDialogCreate.setButton(-3, "OK", new DialogInterface.OnClickListener() { // from class: sg.vantagepoint.uncrackable1.MainActivity.1
+            @Override // android.content.DialogInterface.OnClickListener
+            public void onClick(DialogInterface dialogInterface, int i) {
+                System.exit(0);
+            }</code></pre>
+<p style="text-align: center;" data-ke-size="size16">루팅이 탐지되면 경고문을 출력한 다음 프로그램을 종료시킨다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">클래스 c 를 확인해서 조건문에 대해서 자세히 알아보겠다.</p>
+<pre id="code_1762606617795" class="java" data-ke-language="java" data-ke-type="codeblock"><code>public class c {
+    public static boolean a() {
+        for (String str : System.getenv("PATH").split(":")) {
+            if (new File(str, "su").exists()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean b() {
+        String str = Build.TAGS;
+        return str != null &amp;&amp; str.contains("test-keys");
+    }
+
+    public static boolean c() {
+        for (String str : new String[]{"/system/app/Superuser.apk", "/system/xbin/daemonsu", "/system/etc/init.d/99SuperSUDaemon", "/system/bin/.ext/.su", "/system/etc/.has_su_daemon", "/system/etc/.installed_su_daemon", "/dev/com.koushikdutta.superuser.daemon/"}) {
+            if (new File(str).exists()) {
+                return true;
+            }
+        }
+        return false;
+    }
+}</code></pre>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">간단히 요약하면</p>
+<p style="text-align: center;" data-ke-size="size16">c.a() : su 라는 파일이 있는지 확인</p>
+<p style="text-align: center;" data-ke-size="size16">c.b() : Build.TAGS 에 test-keys 가 있는지 확인</p>
+<p style="text-align: center;" data-ke-size="size16">c.c() : 루팅과 관련있는 애플케이션을 확인</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1762614185590" class="java" data-ke-language="java" data-ke-type="codeblock"><code>private void a(String str) {
+        AlertDialog alertDialogCreate = new AlertDialog.Builder(this).create();
+        alertDialogCreate.setTitle(str);
+        alertDialogCreate.setMessage("This is unacceptable. The app is now going to exit.");
+        alertDialogCreate.setButton(-3, "OK", new DialogInterface.OnClickListener() { // from class: sg.vantagepoint.uncrackable1.MainActivity.1
+            @Override // android.content.DialogInterface.OnClickListener
+            public void onClick(DialogInterface dialogInterface, int i) {
+                System.exit(0);
+            }</code></pre>
+<p style="text-align: center;" data-ke-size="size16">애플리케이션을 종료하는 구문을 다시 살펴보자.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">System.exit() 를 사용하여 종료하기 때문에</p>
+<p style="text-align: center;" data-ke-size="size16">이 함수를 호출하지 않도록 하면 루팅 탐지를 우회할 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1762619217707" class="javascript" data-ke-language="javascript" data-ke-type="codeblock"><code>Java.perform(function () {
+  console.log("[*] Frida Script start");
+
+  let AnonymousClass1 = Java.use("sg.vantagepoint.uncrackable1.MainActivity$1");
+  AnonymousClass1["onClick"].implementation = function (dialogInterface, i) {
+    console.log("We passed Sytem.out!!!");
+  };
+
+  console.log("[*] Frida Script finish");
+});</code></pre>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">만든 js 코드를 Frida 를 통해서 사용하면 다음과 같이 터미널에 입력하면</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1762687388825" class="bash" data-ke-language="bash" data-ke-type="codeblock"><code>frida -U -f owasp.mstg.uncrackable1 -l frida_hooking.js
+     ____
+    / _  |   Frida 17.3.2 - A world-class dynamic instrumentation toolkit
+   | (_| |
+    &gt; _  |   Commands:
+   /_/ |_|       help      -&gt; Displays the help system
+   . . . .       object?   -&gt; Display information about 'object'
+   . . . .       exit/quit -&gt; Exit
+   . . . .
+   . . . .   More info at https://frida.re/docs/home/
+   . . . .
+   . . . .   Connected to Android Emulator 5554 (id=emulator-5554)
+Spawned `owasp.mstg.uncrackable1`. Resuming main thread!
+[Android Emulator 5554::owasp.mstg.uncrackable1 ]-&gt; [*] Frida Script start
+[*] Frida Script finish
+We passed Sytem.out!!!</code></pre>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">OK 를 눌러도 종료되지 않고 애플리케이션이 켜진 채로 유지된다.</p>
+<p style="text-align: center;" data-ke-size="size16">이제 Secret String 이 무엇인지 알아보자.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1762688389858" class="java" data-ke-language="java" data-ke-type="codeblock"><code>public void verify(View view) {
+        String str;
+        String string = ((EditText) findViewById(R.id.edit_text)).getText().toString();
+        AlertDialog alertDialogCreate = new AlertDialog.Builder(this).create();
+        if (a.a(string)) {
+            alertDialogCreate.setTitle("Success!");
+            str = "This is the correct secret.";
+        } else {
+            alertDialogCreate.setTitle("Nope...");
+            str = "That's not it. Try again.";
+        }
+        alertDialogCreate.setMessage(str);
+        alertDialogCreate.setButton(-3, "OK", new DialogInterface.OnClickListener() { // from class: sg.vantagepoint.uncrackable1.MainActivity.2
+            @Override // android.content.DialogInterface.OnClickListener
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialogCreate.show();
+    }</code></pre>
+<p data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">verify() 함수에서 Secret String 을 확인하는 구문이 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">a.a() 함수를 사용하여 Secret String 을 확인하기 때문에</p>
+<p style="text-align: center;" data-ke-size="size16">a.a() 함수를 살펴보겠다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1762688479409" class="java" data-ke-language="java" data-ke-type="codeblock"><code>public class a {
+    public static boolean a(String str) {
+        byte[] bArrA;
+        byte[] bArr = new byte[0];
+        try {
+            bArrA = sg.vantagepoint.a.a.a(b("8d127684cbc37c17616d806cf50473cc"), Base64.decode("5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", 0));
+        } catch (Exception e) {
+            Log.d("CodeCheck", "AES error:" + e.getMessage());
+            bArrA = bArr;
+        }
+        return str.equals(new String(bArrA));
+    }</code></pre>
+<p data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">하나씩 살펴보겠다.</p>
+<pre id="code_1762689079166" class="java" data-ke-language="java" data-ke-type="codeblock"><code>b("8d127684cbc37c17616d806cf50473cc")
+
+public static byte[] b(String str) {
+        int length = str.length();
+        byte[] bArr = new byte[length / 2];
+        for (int i = 0; i &lt; length; i += 2) {
+            bArr[i / 2] = (byte) ((Character.digit(str.charAt(i), 16) &lt;&lt; 4) + Character.digit(str.charAt(i + 1), 16));
+        }
+        return bArr;
+    }</code></pre>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">b() 를 사용하고 있으며, 이 b() 는</p>
+<p style="text-align: center;" data-ke-size="size16">문자열을 바이트 배열로 변환하는 일을 한다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1762689113974" class="java" data-ke-language="java" data-ke-type="codeblock"><code>Base64.decode("5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=", 0)</code></pre>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">그 다음은 Base64 로 인코딩 된 문자열을 디코딩하고 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">이제 sg.vantagepoint.a.a.a() 를 살펴보겠다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1762689210771" class="java" data-ke-language="java" data-ke-type="codeblock"><code>public class a {
+    public static byte[] a(byte[] bArr, byte[] bArr2) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+        SecretKeySpec secretKeySpec = new SecretKeySpec(bArr, "AES/ECB/PKCS7Padding");
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(2, secretKeySpec);
+        return cipher.doFinal(bArr2);
+    }
+}</code></pre>
+<p data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">AES 알고리즘을 사용하여 데이터를 복호화하는 함수이다.</p>
+<p style="text-align: center;" data-ke-size="size16">bArr 이 비밀키, bArr2 가 복호화할 데이터이다.</p>
+<p style="text-align: center;" data-ke-size="size16">다시 말해서, 여기서 복호화한 값이 사용자가 입력한 값과 일치하는지 비교한 후 결과 값을 리턴하는 것이다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">이제 Frida 코드를 이어서 작성해서 Secret String 을 확인해보겠다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1762689516681" class="javascript" data-ke-language="javascript" data-ke-type="codeblock"><code>Java.perform(function () {
+  console.log("[*] Frida Script start");
+
+  let AnonymousClass1 = Java.use("sg.vantagepoint.uncrackable1.MainActivity$1");
+  AnonymousClass1["onClick"].implementation = function (dialogInterface, i) {
+    console.log("We passed Sytem.out!!!");
+  };
+
+  var decryptClass = Java.use("sg.vantagepoint.a.a");
+  decryptClass.a.implementation = function (args1, args2) {
+    var decryptValue = this.a(args1, args2);
+
+    var str = "";
+    for (var i = 0; i &lt; decryptValue.length; i++) {
+      str += String.fromCharCode(decryptValue[i]);
+    }
+
+    console.log("[*] Secret String: " + str);
+    return decryptValue;
+  };
+
+  console.log("[*] Frida Script finish");
+});</code></pre>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">이제 아무 문자열이나 입력하고 결과를 확인해보면</p>
+<p style="text-align: center;" data-ke-size="size16">Secret String 이 무엇인지 알 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1762689482773" class="java" data-ke-language="java" data-ke-type="codeblock"><code>frida -U -f owasp.mstg.uncrackable1 -l frida_hooking.js
+     ____
+    / _  |   Frida 17.3.2 - A world-class dynamic instrumentation toolkit
+   | (_| |
+    &gt; _  |   Commands:
+   /_/ |_|       help      -&gt; Displays the help system
+   . . . .       object?   -&gt; Display information about 'object'
+   . . . .       exit/quit -&gt; Exit
+   . . . .
+   . . . .   More info at https://frida.re/docs/home/
+   . . . .
+   . . . .   Connected to Android Emulator 5554 (id=emulator-5554)
+Spawned `owasp.mstg.uncrackable1`. Resuming main thread!
+[Android Emulator 5554::owasp.mstg.uncrackable1 ]-&gt; [*] Frida Script start
+[*] Frida Script finish
+We passed Sytem.out!!!
+[*] Secret String: I want to believe</code></pre>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">Secret String 이 맞는지 확인해보면 Success 를 볼 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p><figure class="imageblock alignCenter" width="522" height="236" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_2.png" width="522" height="236"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 data-ke-size="size26">후기</h2>
+<p style="text-align: center;" data-ke-size="size16">Frida 를 처음 사용해 보았는데</p>
+<p style="text-align: center;" data-ke-size="size16">애플리케이션이 켜진 상태에서 즉각적으로 반응한다는 것이 매우 신기하다.</p>
+<p style="text-align: center;" data-ke-size="size16">JS 코드를 사용하기 때문에 Frida 를 전문적으로 사용하려면 JS 코드 지식이 필수적이라고 생각한다.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            #모바일 #안드로이드 #팀프로젝트 #워게임 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

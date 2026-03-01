@@ -1,0 +1,138 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>[모바일 애플리케이션 분석] 3주차 - ProjectApp</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">[모바일 애플리케이션 분석] 3주차 - ProjectApp</h2>
+                                <div class="box-info">
+                                    <p class="category">?️ Projects/? 모바일 분석</p>
+                                    <p class="date">2025-10-05 16:03:23</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p style="text-align: center;" data-ke-size="size16">apk 파일을 분석하기 위해서 JADX 를 사용하였다.</p>
+<p style="text-align: center;" data-ke-size="size16">만약 설치되어 있지 않다면, 1주차 환경설정 블로그를 보고 오기를 추천한다.</p>
+<p style="text-align: center;" data-ke-size="size16"><a href="https://sec-ret.tistory.com/1" target="_blank" rel="noopener&nbsp;noreferrer">https://sec-ret.tistory.com/1</a></p>
+<figure id="og_1759487576831" contenteditable="false" data-ke-type="opengraph" data-ke-align="alignCenter" data-og-type="article" data-og-title="[모바일 애플리케이션 분석] 1주차 - 환경 설정" data-og-description="팀 프로젝트로 안드로이드 모바일 애플리케이션을 분석하는 프로젝트를 선택하였다.이번 1주차에는 분석을 위한 툴을 설치하는 작업을 진행하고자 한다.설치하려는 툴은 ADB, Android Studio, Frida, J" data-og-host="sec-ret.tistory.com" data-og-source-url="https://sec-ret.tistory.com/1" data-og-url="https://sec-ret.tistory.com/1" data-og-image="https://scrap.kakaocdn.net/dn/VDw2i/hyZKeX8paq/CjsjCvRtzUkXXs8gUtTEr0/img.png?width=800&amp;height=800&amp;face=0_0_800_800,https://scrap.kakaocdn.net/dn/hfBi7/hyZKrXyTOJ/XX8qlyq9pq1FGkxHE8TVvK/img.png?width=800&amp;height=800&amp;face=0_0_800_800,https://scrap.kakaocdn.net/dn/dJ04jj/hyZKauGQfI/PAzVyOohSHhmfWikKjBNJ1/img.png?width=1555&amp;height=1258&amp;face=0_0_1555_1258"><a href="https://sec-ret.tistory.com/1" target="_blank" rel="noopener" data-source-url="https://sec-ret.tistory.com/1">
+<div class="og-image" style="background-image: url('https://scrap.kakaocdn.net/dn/VDw2i/hyZKeX8paq/CjsjCvRtzUkXXs8gUtTEr0/img.png?width=800&amp;height=800&amp;face=0_0_800_800,https://scrap.kakaocdn.net/dn/hfBi7/hyZKrXyTOJ/XX8qlyq9pq1FGkxHE8TVvK/img.png?width=800&amp;height=800&amp;face=0_0_800_800,https://scrap.kakaocdn.net/dn/dJ04jj/hyZKauGQfI/PAzVyOohSHhmfWikKjBNJ1/img.png?width=1555&amp;height=1258&amp;face=0_0_1555_1258');">&nbsp;</div>
+<div class="og-text">
+<p class="og-title" data-ke-size="size16">[모바일 애플리케이션 분석] 1주차 - 환경 설정</p>
+<p class="og-desc" data-ke-size="size16">팀 프로젝트로 안드로이드 모바일 애플리케이션을 분석하는 프로젝트를 선택하였다.이번 1주차에는 분석을 위한 툴을 설치하는 작업을 진행하고자 한다.설치하려는 툴은 ADB, Android Studio, Frida, J</p>
+<p class="og-host" data-ke-size="size16">sec-ret.tistory.com</p>
+</div>
+</a></figure>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">애플리케이션 설치 후 실행</h2>
+<p style="text-align: center;" data-ke-size="size16">apk 파일을 이용해, 애플리케이션을 설치한 후 실행하였다.</p>
+<p style="text-align: center;" data-ke-size="size16">터미널에서 설치하고자 하는 apk 파일이 있는 경로로 이동한다.</p>
+<p style="text-align: center;" data-ke-size="size16">그 후 adb install app_name.apk 형식으로 입력을 하면 설치가 된다.</p>
+<pre id="code_1759590887827" class="bash" data-ke-language="bash" data-ke-type="codeblock"><code>PS D:\My_Projects\Mobile_Analysis\WarGame\ProjectApp.apk&gt; adb install ProjectApp.apk
+Performing Streamed Install
+Success</code></pre>
+<p><figure class="imageblock alignCenter" width="459" height="902" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img.png" width="459" height="902"  />
+    </span>
+    <figcaption>ProjectApp 실행 모습</figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">이 애플리케이션은 입력을 할 수 있는 창과</p>
+<p style="text-align: center;" data-ke-size="size16">SERIAL CHECK 라는 버튼이 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">올바른 시리얼을 입력하면 플래그를 출력하는 애플리케이션으로 추측한다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">JADX 로 분석</h2>
+<p style="text-align: center;" data-ke-size="size16">더 자세히 애플리케이션에 대해 알기 위해서</p>
+<p style="text-align: center;" data-ke-size="size16">JADX 를 사용하였다.</p>
+<pre id="code_1759646132928" class="javascript" data-ke-language="javascript" data-ke-type="codeblock"><code>&lt;activity
+            android:name="com.ctf.projectapp.MainActivity"
+            android:exported="true"&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.intent.action.MAIN"/&gt;
+                &lt;category android:name="android.intent.category.LAUNCHER"/&gt;
+            &lt;/intent-filter&gt;
+            &lt;meta-data
+                android:name="android.app.lib_name"
+                android:value=""/&gt;
+        &lt;/activity&gt;</code></pre>
+<p style="text-align: center;" data-ke-size="size16">AndroidManifest.xml 를 확인해보니</p>
+<p style="text-align: center;" data-ke-size="size16">com.ctf.projectapp.MainActivity 에서 시작한다는 것을 알았다.</p>
+<p style="text-align: center;" data-ke-size="size16">이 경로로 가서 MainAcitivity 코드를 살펴보도록 하자.</p>
+<pre id="code_1759646351828" class="java" data-ke-language="java" data-ke-type="codeblock"><code>public void checkSerial() {
+        if (decodeSecret().equals(this.serialEditText.getText().toString())) {
+            showAlert("Correct!");
+        } else {
+            showAlert("Incorrect!");
+        }
+    }</code></pre>
+<p style="text-align: center;" data-ke-size="size16">시리얼을 체크하는 구문이 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">올바른 시리얼이면 Correct!</p>
+<p style="text-align: center;" data-ke-size="size16">올바른 시리얼이 아니면 Incorrect! 를 출력한다.</p>
+<p style="text-align: center;" data-ke-size="size16">if 문의 조건을 자세히 살펴보면,</p>
+<pre id="code_1759646487590" class="java" data-ke-language="java" data-ke-type="codeblock"><code>if (decodeSecret().equals(this.serialEditText.getText().toString()))</code></pre>
+<p style="text-align: center;" data-ke-size="size16">decodeSecret() 과 getText() 를 비교하고 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">getText() 는 사용자가 입력하는 시리얼 일테니</p>
+<p style="text-align: center;" data-ke-size="size16">decodeSecret() 에 담긴 값이 올바른 시리얼일 것이다.</p>
+<pre id="code_1759646636076" class="java" data-ke-language="java" data-ke-type="codeblock"><code>private String decodeSecret() throws Resources.NotFoundException, IOException {
+        try {
+            InputStream inputStreamOpenRawResource = getResources().openRawResource(R.raw.secret);
+            byte[] bArr = new byte[inputStreamOpenRawResource.available()];
+            inputStreamOpenRawResource.read(bArr);
+            inputStreamOpenRawResource.close();
+            return new String(Base64.decode(new String(bArr), 0));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }</code></pre>
+<p style="text-align: center;" data-ke-size="size16">openRawResource 를 R.raw.secret 에서 가져온 후 base64 로 디코딩을 하여 반환하는 함수이다.</p>
+<p style="text-align: center;" data-ke-size="size16">R 은 resource 이기 때문에 리소스에서 raw 로 들어가면 secret.txt 가 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">※ com.ctf.projectapp 에 있는 R 에 들어가는 것이 아니다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">애플리케이션 실행 후 플래그 확인</h2>
+<pre id="code_1759647508450" class="bash" data-ke-language="bash" data-ke-type="codeblock"><code>ZmxhZ3toZWxsb19wcm9qZWN0XzRwcH0=</code></pre>
+<p style="text-align: center;" data-ke-size="size16">secret.txt 에 적힌 값이다.</p>
+<p style="text-align: center;" data-ke-size="size16">decodeSecret() 은 이 값을 디코딩한 것이기 때문에</p>
+<p style="text-align: center;" data-ke-size="size16">이 값을 디코딩한 값이 플래그이고 입력 시 Correct! 를 출력할 것이다.</p>
+<p><figure class="imageblock alignCenter" width="516" height="223" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_1.png" width="516" height="223"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">Correct! 를 출력함으로</p>
+<p style="text-align: center;" data-ke-size="size16">이 값이 플래그라는 것을 알 수 있다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">후기</h2>
+<p style="text-align: center;" data-ke-size="size16">처음에 apk 를 드래그 하여 설치하는 과정에서 오류가 발생하여</p>
+<p style="text-align: center;" data-ke-size="size16">설치하는데 어려움을 겪었다.</p>
+<p style="text-align: center;" data-ke-size="size16">만약, 계속 오류가 생긴다면 터미널에서 설치하는 것을 권장한다.</p>
+<p style="text-align: center;" data-ke-size="size16">또한 JADX 를 처음으로 열었을 때,</p>
+<p style="text-align: center;" data-ke-size="size16">내 생각보다 많은 폴더들이 있어서 내가 원하는 코드를 보기가 찾기가 힘들었다.</p>
+<p style="text-align: center;" data-ke-size="size16">시작점을 먼저 찾은 후 분석을 하는 것을 매우 권장한다.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            #리버싱 #팀프로젝트 #워게임 #write-up #모바일 분석 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

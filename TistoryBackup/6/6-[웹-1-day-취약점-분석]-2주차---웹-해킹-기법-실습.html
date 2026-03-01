@@ -1,0 +1,156 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>[웹 1-day 취약점 분석] 2주차 - 웹 해킹 기법 실습</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">[웹 1-day 취약점 분석] 2주차 - 웹 해킹 기법 실습</h2>
+                                <div class="box-info">
+                                    <p class="category">?️ Projects/? 취약점 분석</p>
+                                    <p class="date">2025-10-01 00:44:30</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p style="text-align: center;" data-ke-size="size16">이제 bWAPP 를 구축하였으니 bWAPP 로</p>
+<p style="text-align: center;" data-ke-size="size16">웹 해킹 기법들을 실습해보려고 한다.</p>
+<p style="text-align: center;" data-ke-size="size16">실습할 기법들은 SQL Injection, XSS, CSRF 이다.</p>
+<p style="text-align: center;" data-ke-size="size16">난이도는 모두 low 로 진행하였다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">SQL Injection (POST/Search)</h2>
+<p><figure class="imageblock alignCenter" width="632" height="299" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img.png" width="632" height="299"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">다음 사이트는 영화 제목을 입력하면 해당하는 영화의 정보를 출력하는 사이트이다.</p>
+<p style="text-align: center;" data-ke-size="size16">SQL Injection 이 작동하는지 알아보기 위해 작은따옴표(') 와 큰따옴표(") 를 넣어보았다.</p>
+<p><figure class="imageblock alignCenter" width="635" height="302" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_1.png" width="635" height="302"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">큰따옴표를 사용한 경우 정상적인 모습을 볼 수 있다.</p>
+<p><figure class="imageblock alignCenter" width="647" height="399" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_2.png" width="647" height="399"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">하지만 작은따옴표를 입력한 경우, SQL 오류가 발생하였다.</p>
+<p style="text-align: center;" data-ke-size="size16">title=' ' 로 작은따옴표 안에 문자가 들어가야 하는데 작은따옴표가 들어가서 오류가 발생한 것이다.</p>
+<p style="text-align: center;" data-ke-size="size16">다시 말해서 SQL Injection 이 가능하다는 뜻이다.</p>
+<p style="text-align: center;" data-ke-size="size16">'union select all 숫자# 로 칼럼의 수를 알 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">이 사이트에서는 총 7개의 칼럼이 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">'union select 1, column_name, 2, 3, 4, 5, 6 from information_schema.columns where table_name='users'# 를 입력하여</p>
+<p style="text-align: center;" data-ke-size="size16">테이블의 이름을 확인할 수 있다.</p>
+<p><figure class="imageblock alignCenter" width="638" height="607" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_3.png" width="638" height="607"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">그 결과, id 나 password 등의 테이블들을 확인할 수 있었다.</p>
+<p style="text-align: center;" data-ke-size="size16">'union select 1, login, email, id, password, 6, 7 from users -- 로 계정 정보를 알아볼 수 있다.</p>
+<p><figure class="imageblock alignCenter" width="689" height="117" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_4.png" width="689" height="117"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h3 style="text-align: left;" data-ke-size="size23">SQL Injection 대응 방안</h3>
+<p style="text-align: center;" data-ke-size="size16">SQL Injection 은 SQL 명령어를 사용하는 공격이다.</p>
+<p style="text-align: center;" data-ke-size="size16">따라서 필터링을 통해 명령어를 입력하는 것을 막을 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">또한 DB 계정의 권환을 최소화하여, 계정이 탈취되더라도 관리자 권한을 얻지 못하게 막을 수도 있다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">XSS - Reflected (GET)</h2>
+<p><figure class="imageblock alignCenter" width="661" height="308" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_5.png" width="661" height="308"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">이름과 성을 입력하면 각각의 것을 출력하는 사이트이다.</p>
+<p style="text-align: center;" data-ke-size="size16">한 번 123, 456을 입력해보았다.</p>
+<p style="text-align: center;" data-ke-size="size16">그 결과 url 이 /bWAPP/xss_get.php?firstname=123&amp;lastname=456&amp;form=submit 로 변경되었다.</p>
+<p style="text-align: center;" data-ke-size="size16">이번에는 JS 명령어가 가능한지 알아보기 위해 123, 456에서 &lt;h1&gt;123&lt;/h1&gt;, 456으로 입력을 변경하였다.</p>
+<p><figure class="imageblock alignCenter" width="668" height="314" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_6.png" width="668" height="314"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">h1 명령어가 작동하였고, url 에도 h1 이 들어갔다.</p>
+<p style="text-align: center;" data-ke-size="size16">이런 경우 script 를 사용하여 XSS 공격을 할 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">&lt;script&gt;alert(document.cookie)&lt;/script&gt; 로 쿠키 값을 확인해보는 명령어를 입력해보았다.</p>
+<p><figure class="imageblock alignCenter" width="648" height="223" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_7.png" width="648" height="223"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">명령어로 쿠기 값을 바로 보이게 만들었다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h3 data-ke-size="size23">XSS 대응 방안</h3>
+<p style="text-align: center;" data-ke-size="size16">XSS 도 SQL Injection 과 같이 필터링을 사용하여 대응할 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">또한 HTML 태그가 필요한 경우 화이트 리스트를 만들어서</p>
+<p style="text-align: center;" data-ke-size="size16">해당하는 태그만 허용하는 방식을 사용할 수도 있다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">CSRF (Change Password)</h2>
+<p data-ke-size="size16">&nbsp;</p>
+<p><figure class="imageblock alignCenter" width="667" height="317" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_8.png" width="667" height="317"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">비밀번호를 변경하는 사이트이다.</p>
+<p style="text-align: center;" data-ke-size="size16">한 번 비밀번호를 123으로 변경하였다.</p>
+<p style="text-align: center;" data-ke-size="size16">그렇게 하니 url 이 /bWAPP/scrf_1.php?password_new=123&amp;password_conf=123&amp;action=change 가 되었다.</p>
+<p style="text-align: center;" data-ke-size="size16">즉, url 에 비밀번호가 그대로 적혀있고 url 에 있는 비밀번호를 다른 것으로 변경하면 입력이 반영된다.</p>
+<p style="text-align: center;" data-ke-size="size16">이를 활용하여 공격을 가할 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">예를 들어, 위 형식과 같이 비밀번호를 수정한 뒤에 url 을 피해자에게 여러 방법으로 보내서</p>
+<p style="text-align: center;" data-ke-size="size16">피해자가 이 url 에 접속할 경우, 피해자 계정의 비밀번호가 공격자가 변경한 비밀번호로 변경된다.</p>
+<p style="text-align: center;" data-ke-size="size16">그렇게 되면 피해자는 자신의 계정에 접속하지 못하는 불상사가 발생한다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h3 style="text-align: left;" data-ke-size="size23">CSRF 대응 방안</h3>
+<p style="text-align: center;" data-ke-size="size16">사용자가 어떤 경로를 통해 웹 사이트에 접속하였는지 알 수 있는 흔적으로 Referrer 가 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">Referrer 를 통해 검증하여 올바른 경로로 접속한 것이 아니라면, 접속할 수 없도록 막는 방법이 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">또 서버에서 웹 사이트에 접속한 사용자에게 Captcha 같이 재인증을 요구하여</p>
+<p style="text-align: center;" data-ke-size="size16">올바른 요청인지 확인하는 동시에 CSRF 를 막을 수 있다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">후기</h2>
+<p style="text-align: center;" data-ke-size="size16">취약점을 실습하면서 url 과 오류를 통해 정보가 알 수 있다는 점을 깨달았다.</p>
+<p style="text-align: center;" data-ke-size="size16">너무 많은 정보를 주지 않도록 자세한 설명을 적지 않는 것이 좋다고 생각한다.</p>
+<p style="text-align: center;" data-ke-size="size16">그리고 기존에 화이트 리스트, 필터링은 알고 있었지만</p>
+<p style="text-align: center;" data-ke-size="size16">권한을 최소화하는 방식은 처음 알았다.</p>
+<p style="text-align: center;" data-ke-size="size16">앞으로 대응 방안을 생각할 때, 권한에 대한 부분도 생각할 필요를 느꼈다.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            #팀프로젝트 #웹 해킹 #bWAPP 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

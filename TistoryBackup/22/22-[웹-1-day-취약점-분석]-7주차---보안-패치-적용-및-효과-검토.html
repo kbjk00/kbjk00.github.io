@@ -1,0 +1,264 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>[웹 1-day 취약점 분석] 7주차 - 보안 패치 적용 및 효과 검토</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">[웹 1-day 취약점 분석] 7주차 - 보안 패치 적용 및 효과 검토</h2>
+                                <div class="box-info">
+                                    <p class="category">?️ Projects/? 취약점 분석</p>
+                                    <p class="date">2025-11-19 13:42:29</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p style="text-align: center;" data-ke-size="size16">이번 주차에는 직접 보안 패치를 적용해보고</p>
+<p style="text-align: center;" data-ke-size="size16">효과가 어떤지 알아보는 활동을 하였다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 data-ke-size="size26">패치 전 사전 지식</h2>
+<p style="text-align: center;" data-ke-size="size16">이번 패치에서 내가 사용한 PoC 코드에는 Spring Boot 와 Maven 이 사용되었다.</p>
+<p style="text-align: center;" data-ke-size="size16">이 2개에 대해서 먼저 말한 다음에</p>
+<p style="text-align: center;" data-ke-size="size16">패치를 어떻게 하였는지 설명하도록 하겠다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h3 style="text-align: left;" data-ke-size="size23">Maven</h3>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p><figure class="imageblock alignCenter" width="454" height="341" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img.jpg" width="454" height="341"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">Maven 이라는 Java 프로젝트의 빌드를 자동화 해주는 도구가 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">즉, 소스 코드를 컴파일하고 패키징해서 배포하는 일을 자동화 하는 것이다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h4 style="text-align: left;" data-ke-size="size20">pom.xml</h4>
+<p style="text-align: center;" data-ke-size="size16">Maven 을 사용한다면, 최상위 디렉터리에 pom.xml 이 보일 것이다.</p>
+<p style="text-align: center;" data-ke-size="size16">pom.xml 은 Maven 이 참조하는 설정 파일 중 하나이다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">pom 이라는 이름은 Project Object Model 에서 왔으며,</p>
+<p style="text-align: center;" data-ke-size="size16">프로젝트 내 빌드 옵션을 설정하는 부분이다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h3 style="text-align: left;" data-ke-size="size23">Spring Boot</h3>
+<p><figure class="imageblock alignCenter" width="425" height="223" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img.webp" width="425" height="223"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">Spring Boot 는 Spring Framework 로 애플리케이션을 만들 때</p>
+<p style="text-align: center;" data-ke-size="size16">필요한 설정을 간편하게 처리해주는 별도의 Framework 이다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">초기 설정을 간편하게 처리해주는 것 외에</p>
+<p style="text-align: center;" data-ke-size="size16">내장 서버를 사용하여, 빠르고 간편하게 배포를 할 수있다는 것과</p>
+<p style="text-align: center;" data-ke-size="size16">독립적으로 실행 가능한 .jar 파일로 프로젝트를 빌드할 수 있어,</p>
+<p style="text-align: center;" data-ke-size="size16">가상화 환경에서 빠르게 배포할 수 있다는 장점이 있다.&nbsp;</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">패치 및 효과 확인</h2>
+<p style="text-align: center;" data-ke-size="size16">사전 지식을 다 알았으니</p>
+<p style="text-align: center;" data-ke-size="size16">이 지식을 바탕으로 패치를 진행하겠다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p><figure class="imageblock alignCenter" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img.png"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">내가 사용한 PoC 에서 pom.xml 이 있으니,</p>
+<p style="text-align: center;" data-ke-size="size16">Spring Boot 가 사용된 것을 알 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">Spring Boot 의 버전을 확인해 보았다.</p>
+<p style="text-align: center;" data-ke-size="size16">다음은 pom.xml 의 전체 코드이다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1763524509314" class="bash" data-ke-language="bash" data-ke-type="codeblock"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+        &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+        &lt;parent&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+                &lt;version&gt;2.6.3&lt;/version&gt;
+                &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+        &lt;/parent&gt;
+        &lt;packaging&gt;war&lt;/packaging&gt;
+        &lt;groupId&gt;com.example&lt;/groupId&gt;
+        &lt;artifactId&gt;spring4shell-vulnerable-application&lt;/artifactId&gt;
+        &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+        &lt;name&gt;Spring4Shell Vulnerable Application&lt;/name&gt;
+        &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+        &lt;properties&gt;
+                &lt;java.version&gt;1.8&lt;/java.version&gt;
+        &lt;/properties&gt;
+        &lt;dependencies&gt;
+                &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+                        &lt;version&gt;2.6.3&lt;/version&gt;
+                &lt;/dependency&gt;
+                &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+                        &lt;version&gt;2.6.3&lt;/version&gt;
+                &lt;/dependency&gt;
+
+                &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+                        &lt;version&gt;2.6.3&lt;/version&gt;
+                        &lt;scope&gt;test&lt;/scope&gt;
+                &lt;/dependency&gt;
+
+                &lt;dependency&gt;
+                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                        &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+                        &lt;version&gt;2.6.3&lt;/version&gt;
+                        &lt;scope&gt;provided&lt;/scope&gt;
+                &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+
+        &lt;build&gt;
+                &lt;finalName&gt;helloworld&lt;/finalName&gt;
+                &lt;plugins&gt;
+                        &lt;plugin&gt;
+                                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                                &lt;version&gt;2.6.3&lt;/version&gt;
+                        &lt;/plugin&gt;
+                &lt;/plugins&gt;
+        &lt;/build&gt;
+
+&lt;/project&gt;</code></pre>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">여기서 &lt;version&gt; 을 살펴보면</p>
+<p style="text-align: center;" data-ke-size="size16">2.6.3 버전이라는 것을 알 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p><figure class="imageblock alignCenter" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_1.png"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">Spring 에서 발표한 공식 문서의 일부분이다.</p>
+<p style="text-align: center;" data-ke-size="size16">Spring Boot 2.6.6 에서 CVE-2022-22965</p>
+<p style="text-align: center;" data-ke-size="size16">즉, Spring4Shell 을 수정했다고 알렸다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">따라서 Spring Boot 의 버전을</p>
+<p style="text-align: center;" data-ke-size="size16">2.6.3 에서 2.6.6 으로 바꾸면 된다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">그 후 다음 명령어를 사용하여 재구축을 진행하였다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1763524984892" class="bash" data-ke-language="bash" data-ke-type="codeblock"><code>docker build -t spring4shell-patched .
+docker run -d -p 8080:8080 --name spring4shell-test spring4shell-patched</code></pre>
+<p data-ke-size="size16">&nbsp;</p>
+<p><figure class="imageblock alignCenter" width="652" height="248" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_2.png" width="652" height="248"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">이제 패치 후 웹 페이지를 연 다음</p>
+<p style="text-align: center;" data-ke-size="size16">익스플로잇 코드로 웹 쉘이 생성되는지 확인하면 된다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p><figure class="imageblock alignCenter" width="681" height="243" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_3.png" width="681" height="243"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">코드를 실행하면 웹 쉘이 생성되었다고 하지만</p>
+<p style="text-align: center;" data-ke-size="size16">접속해보면 404 가 나온다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">이게 패치로 인해서 막힌 건지 아니면 다른 이유인지</p>
+<p style="text-align: center;" data-ke-size="size16">더 자세히 살펴보았다.</p>
+<p style="text-align: center;" data-ke-size="size16">그러기 위해서는 다음 명령어를 쳐서 컨테이너의 이름을 알아야 한다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1763525423013" class="bash" data-ke-language="bash" data-ke-type="codeblock"><code>docker ps                                                               
+CONTAINER ID   IMAGE                  COMMAND             CREATED              STATUS              PORTS                                       NAMES
+befd6c2cf3a4   spring4shell-patched   "catalina.sh run"   About a minute ago   Up About a minute   0.0.0.0:8080-&gt;8080/tcp, :::8080-&gt;8080/tcp   spring4shell-test</code></pre>
+<p data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">이름은 spring4shell-test 이다.</p>
+<p style="text-align: center;" data-ke-size="size16">이제 이 컨테이너의 다음 명령어로 접속하면 된다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<pre id="code_1763525526328" class="bash" data-ke-language="bash" data-ke-type="codeblock"><code>docker exec -it spring4shell-test /bin/bash</code></pre>
+<p data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">접속하였다면 웹 쉘이 생성되었는지 보면 된다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">그 전에 패치하기 전에는 웹 쉘이 어디에 생성되는지부터 살펴보겠다.</p>
+<p style="text-align: center;" data-ke-size="size16">/usr/local/tomcat/webapps/ROOT 에 shell.jsp 가 있는 것을 볼 수 있다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p><figure class="imageblock alignCenter" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_4.png"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">여기서 ROOT 라는 디렉터리는 웹 쉘과 함께 생성되는 디렉터리이다.</p>
+<p style="text-align: center;" data-ke-size="size16">웹 쉘이 생성되기 전에는 ROOT 디렉터리가 존재하지 않는다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p><figure class="imageblock alignCenter" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_5.png"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">이제 돌아가서 패치 후를 살펴보면 ROOT 디렉터리가 존재하지 않는다.</p>
+<p><figure class="imageblock alignCenter" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_6.png"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">혹시 몰라서 find 명령어로 루트 디렉터리부터 검색을 시작하게 했지만</p>
+<p style="text-align: center;" data-ke-size="size16">shell.jsp 는 존재하지 않았다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p><figure class="imageblock alignCenter" >
+    <span data-lightbox="lightbox">
+        <img src="./img/img_7.png"  />
+    </span>
+    <figcaption></figcaption>
+</figure></p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">따라서 패치를 통해 취약점을 수정한 것을 확인할 수 있었다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">후기</h2>
+<p style="text-align: center;" data-ke-size="size16">저번에 웹 쉘에 ls -l 을 사용하여 pom.xml 이 있다는 것은 알았는데</p>
+<p style="text-align: center;" data-ke-size="size16">이번에 이 파일이 무슨 역할을 하는 건지 알 수 있어 좋았다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">그리고 이번에 패치를 처음 해보았는데</p>
+<p style="text-align: center;" data-ke-size="size16">실제로 shell.jsp 가 없는 것을 보니 아주 뿌듯하다.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            #Spring #팀프로젝트 #취약점 분석 #1day 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

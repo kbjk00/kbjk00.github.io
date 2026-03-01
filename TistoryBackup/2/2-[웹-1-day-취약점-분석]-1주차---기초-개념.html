@@ -1,0 +1,128 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>[웹 1-day 취약점 분석] 1주차 - 기초 개념</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">[웹 1-day 취약점 분석] 1주차 - 기초 개념</h2>
+                                <div class="box-info">
+                                    <p class="category">?️ Projects/? 취약점 분석</p>
+                                    <p class="date">2025-09-24 12:59:02</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p style="text-align: center;" data-ke-size="size16">이번 프로젝트는 웹에 있는 1-day 취약점을 분석하는 것이다.</p>
+<p style="text-align: center;" data-ke-size="size16">1주차에는 취약점 분석을 위한 개념에 대해 정리하도록 하겠다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">취약점</h2>
+<p style="text-align: center;" data-ke-size="size16">소프트웨어의 결함이나 체계, 설계상의 허점 중 공격자가 악용할 수 있는 부분이다.</p>
+<p style="text-align: center;" data-ke-size="size16">일반적으로 버그, 잘못된 접근 제어 또는 구성, 취약한 암호화, 사람의 실수로 인해 만들어진다.</p>
+<p style="text-align: center;" data-ke-size="size16">이러한 취약점을 수정하고 완화하기 위해서 취약점을 분석하는 과정이 필요하다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">취약점 분석 방법</h2>
+<p style="text-align: center;" data-ke-size="size16">취약점은 여러가지 방법들을 통해서 분석이 이루어진다.</p>
+<p style="text-align: center;" data-ke-size="size16">각 방법들을 사용하여 시스템의 약점을 식별하고, 해당 취약점을 제거하기 위한 계획을 세운다.</p>
+<p style="text-align: center;" data-ke-size="size16">대표적인 방법들은 다음과 같다.</p>
+<h4 style="text-align: left;" data-ke-size="size20">1. 취약점 스캔</h4>
+<p style="text-align: center;" data-ke-size="size16">자동화 도구를 사용해 시스템의 취약점을 식별하는 방법이다.</p>
+<p style="text-align: center;" data-ke-size="size16">취약점 스캐너는 시스템을 검사해 보안 결함 등을 탐지할 수 있다.</p>
+<h4 style="text-align: left;" data-ke-size="size20">2. 패치 관리</h4>
+<p style="text-align: center;" data-ke-size="size16">취약점을 분석하고 나서 발견된 결함을 패치하는 작업은 필수이다.</p>
+<p style="text-align: center;" data-ke-size="size16">패치를 관리하는 것은 주기적인 소프트웨어 업데이트로 취약점을 최소화하는 중요한 일이다.</p>
+<p style="text-align: center;" data-ke-size="size16">특히 운영체제, 애플리케이션에서 제공하는 보안 관련 패치는 무조건 적시에 적용해야 한다.</p>
+<h4 data-ke-size="size20">3. 코드 리뷰</h4>
+<p style="text-align: center;" data-ke-size="size16">소스 코드를 리뷰하는 것은 보통 개발 단계에서 이루어진다.</p>
+<p style="text-align: center;" data-ke-size="size16">리뷰를 하여 잠재적인 취약점을 발견하는데 효과적이다.</p>
+<p style="text-align: center;" data-ke-size="size16">이러한 과정은 대개 다른 개발자나 자동화 도구에 의해서 수행된다.</p>
+<p style="text-align: center;" data-ke-size="size16">특히 신규 기능, 중요한 변경 사항이 있는 경우 코드 리뷰는 반드시 해야할 과정이다.</p>
+<h4 data-ke-size="size20">4. 침투 테스트</h4>
+<p style="text-align: center;" data-ke-size="size16">침투 테스트(Pentration Testing)는 실제 공격자처럼 시스템을 공격하여 취약점을 찾는 방법이다.</p>
+<p style="text-align: center;" data-ke-size="size16">이러한 일을 전문적으로 하는 사람들을 펜테스터(Pentester)라고 한다.</p>
+<h4 data-ke-size="size20">5. 위협 모델링</h4>
+<p style="text-align: center;" data-ke-size="size16">위협 모델링은 시스템에 존재할 수 있는 잠재적 위협을 파악하고, 이에 맞는 대안을 세우는 분석 방법이다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="color: #000000; text-align: start;" data-ke-size="size26">PoC (Proof of Concept)</h2>
+<p style="text-align: center;" data-ke-size="size16">PoC는 취약점 분석의 필수 요소 중 하나로</p>
+<p style="text-align: center;" data-ke-size="size16">취약점을 통해서 실제로 공격이 가능하다는 것을 보여주는 증거이다.</p>
+<p style="text-align: center;" data-ke-size="size16">보통 소스코드나 영상을 통해서 어떻게 공격을 할 수 있는지 알려준다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 data-ke-size="size26">0-day, 1-day, N-day</h2>
+<p style="text-align: center;" data-ke-size="size16">취약점은 크게 0-day, 1-day, N-day로 구분한다.</p>
+<p style="text-align: center;" data-ke-size="size16">0-day, 1-day, N-day는 패치 발표, 패치 적용, 관심도에 따라 나뉘어진다.</p>
+<table style="border-collapse: collapse; width: 100%; height: 123px;" border="1" data-ke-align="alignLeft">
+<tbody>
+<tr style="height: 24px;">
+<td style="width: 11.8217%; height: 24px; text-align: center;">&nbsp;</td>
+<td style="width: 29.3798%; height: 24px; text-align: center;">0-day</td>
+<td style="width: 29.6899%; height: 24px; text-align: center;">1-day</td>
+<td style="width: 29.1085%; height: 24px; text-align: center;">N-day</td>
+</tr>
+<tr style="height: 32px;">
+<td style="width: 11.8217%; height: 32px; text-align: center;">패치 발표</td>
+<td style="width: 29.3798%; height: 32px; text-align: center;">X</td>
+<td style="width: 29.6899%; height: 32px; text-align: center;">O</td>
+<td style="width: 29.1085%; height: 32px; text-align: center;">O</td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 11.8217%; height: 29px; text-align: center;">패치 적용</td>
+<td style="width: 29.3798%; height: 29px; text-align: center;">X</td>
+<td style="width: 29.6899%; height: 29px; text-align: center;">X</td>
+<td style="width: 29.1085%; height: 29px; text-align: center;">X</td>
+</tr>
+<tr style="height: 38px;">
+<td style="width: 11.8217%; height: 38px; text-align: center;">관심도</td>
+<td style="width: 29.3798%; height: 38px; text-align: center;">O</td>
+<td style="width: 29.6899%; height: 38px; text-align: center;">O</td>
+<td style="width: 29.1085%; height: 38px; text-align: center;">X</td>
+</tr>
+</tbody>
+</table>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">취약점 대응 방안</h2>
+<p style="text-align: center;" data-ke-size="size16">취약점을 분석하는 과정을 거쳤으면 그 취약점을 대응하는 방안도 구안해야 한다.</p>
+<p style="text-align: center;" data-ke-size="size16">취약점마다 대응 방안은 가지각색이니 이 글에서는 대표적인 대응 방안에 대해서 말하고자 한다.</p>
+<h4 style="text-align: left;" data-ke-size="size20">1. 정기적으로 보안 업데이트하기</h4>
+<p style="text-align: center;" data-ke-size="size16">취약점이 있는 경우 빠르게 최신 패치를 적용시켜 취약점을 완화시켜야 한다.</p>
+<h4 data-ke-size="size20">2. 강력한 인증, 권한 관리하기</h4>
+<p style="text-align: center;" data-ke-size="size16">다단계 인증으로 강력한 인증을 만들고 사용자에게는 최소 권한만을 주게 하는 방법을 사용한다.</p>
+<h4 data-ke-size="size20">3. 모니터링 및 로그 분석하기</h4>
+<p style="text-align: center;" data-ke-size="size16">실시간으로 이상 현상을 감시하여 공격에 즉각적으로 대응한다.</p>
+<h4 data-ke-size="size20">4. 주기적으로 침투 테스트하기</h4>
+<p style="text-align: center;" data-ke-size="size16">침투 테스트를 거쳐 보안을 강화한다.</p>
+<h4 style="text-align: left;" data-ke-size="size20">5. 사내 보안 교육</h4>
+<p style="text-align: center;" data-ke-size="size16">직원들에게 보안에 대한 교육을 통해 사람에게서 발생하는 실수를 줄인다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">후기</h2>
+<p style="text-align: center;" data-ke-size="size16">취약점 분석은 단순히 분석으로 끝나는 것이 아니다.</p>
+<p style="text-align: center;" data-ke-size="size16">분석을 통해서 취약점을 완화시키는 것 또한 필요하다.</p>
+<p style="text-align: center;" data-ke-size="size16">그렇기 때문에 분석하는 방법만 배우기 보다는</p>
+<p style="text-align: center;" data-ke-size="size16">이를 어떻게 완화시킬 수 있는지 배우는 것도 필요하다고 생각한다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            #팀프로젝트 #웹 해킹 #취약점 분석 #1-day 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+
+<meta charset="utf-8">
+<html lang="ko">
+<head>
+    <link rel="stylesheet" type="text/css" href="./../style.css" />
+    <title>[모바일 애플리케이션 분석] 3주차 - Mobile Baby Analysis1</title>
+</head>
+<body id="tt-body-page" class="">
+<div id="wrap" class="wrap-right">
+    <div id="container">
+        <main class="main ">
+            <div class="area-main">
+                <div class="area-view">
+                    <div class="article-header">
+                        <div class="inner-article-header">
+                            <div class="box-meta">
+                                <h2 class="title-article">[모바일 애플리케이션 분석] 3주차 - Mobile Baby Analysis1</h2>
+                                <div class="box-info">
+                                    <p class="category">?️ Projects/? 모바일 분석</p>
+                                    <p class="date">2025-10-05 21:54:48</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="article-view">
+                        <div class="contents_style">
+                            <p style="text-align: center;" data-ke-size="size16">이번 문제는 Mobile Baby Analysis1 이다.</p>
+<p style="text-align: center;" data-ke-size="size16">writeup 태그가 없기 때문에</p>
+<p style="text-align: center;" data-ke-size="size16">같은 조원들끼리만 공유하도록 비밀글로 작성한다.</p>
+<p style="text-align: center;" data-ke-size="size16">&nbsp;</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">JADX 로 분석</h2>
+<p style="text-align: center;" data-ke-size="size16">JADX 로 MobileBabyAnalysis1.apk 를 분석하였다.</p>
+<p style="text-align: center;" data-ke-size="size16">분석의 목적은 정보를 알기 위함이다.</p>
+<p style="text-align: center;" data-ke-size="size16">따라서 애플리케이션의 정보가 담긴 AndroidManifest.xml 을 살펴보았다.</p>
+<pre id="code_1759668124828" class="kotlin" data-ke-language="kotlin" data-ke-type="codeblock"><code>&lt;meta-data
+        android:name="flag"
+        android:value="flag{4ndr01d_m4nif35t}"/&gt;</code></pre>
+<p style="text-align: center;" data-ke-size="size16">AndroidManifest.xml 에서 meta-data 라는 태그 안에 적힌 코드이다.</p>
+<p style="text-align: center;" data-ke-size="size16">어떤 뜻인지 알아보자.</p>
+<p style="text-align: center;" data-ke-size="size16">android:name 은 아이템 이름을 설정하는 것이다.</p>
+<p style="text-align: center;" data-ke-size="size16">여기 있는 아이템 이름은 flag 라는 말이다.</p>
+<p style="text-align: center;" data-ke-size="size16">그리고 밑에 있는 android:value 는 아이템에 할당된 값을 설정하는 것이다.</p>
+<p style="text-align: center;" data-ke-size="size16">즉, flag 라는 아이템 안에는 flag{4ndr01d_m4nif35t} 라는 값이 담겨있다.</p>
+<p style="text-align: center;" data-ke-size="size16">이 값이 이 문제의 플래그이다.</p>
+<hr contenteditable="false" data-ke-type="horizontalRule" data-ke-style="style7" />
+<h2 style="text-align: left;" data-ke-size="size26">후기</h2>
+<p style="text-align: center;" data-ke-size="size16">이 문제 밑에 적혀있는 문장이 있다.</p>
+<blockquote data-ke-style="style1"><span style="font-family: 'Noto Serif KR';">The Basics of Mobile App Analytics!</span></blockquote>
+<p style="text-align: center;" data-ke-size="size16">모바일 애플리케이션의 기초 중 하나가 AndroidManifest.xml 을 보는 것이라고 생각한다.</p>
+<p style="text-align: center;" data-ke-size="size16">왜냐하면 AndroidManifest.xml 내부에 컴포넌트, 버전 등 애플리케이션의 정보가 저장되기 때문이다.</p>
+                        </div>
+                        <br/>
+                        <div class="tags">
+                            #리버싱 #팀프로젝트 #write-up #모바일 분석 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>
