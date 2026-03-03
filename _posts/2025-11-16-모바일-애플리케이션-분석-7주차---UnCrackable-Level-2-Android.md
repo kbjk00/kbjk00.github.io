@@ -4,7 +4,6 @@ date: 2025-11-16 23:37:47 +0900
 categories: [Projects, "모바일 분석"]
 tags: [모바일, 팀프로젝트, 워게임]
 ---
-
 이번 글은 저번 글에 이어서 UnCrackable Level 2 를 풀어보았다.
 
 ---
@@ -17,11 +16,15 @@ tags: [모바일, 팀프로젝트, 워게임]
 
 나의 경우, Android Studio 를 설치하고 나면 있는 기본적인 AVD 를 사용하였다.
 
+<br>
+
 Level 1 은 실행할 수 있었지만 Level 2 는 애플리케이션이 바로 꺼지는 문제가 생겼다.
 
 이런 경우를 만났다면 API 를 30 이하로 낮춰서 하면 애플리케이션이 정상적으로 작동할 것이다.
 
 또한 이유는 모르겠지만 API 30 에서는 바로 AVD 가 루팅되었다.
+
+<br>
 
 ---
 
@@ -56,6 +59,8 @@ UnCrackable Level 2 의 MainActivity 에서
 루팅이 감지되면 애플리케이션을 종료하는 코드이다.
 
 이 경우 UnCrackable Level 1 과 코드가 똑같아
+
+<br>
 
 코드를 그대로 사용할 예정이다.
 
@@ -144,6 +149,8 @@ strcpy 로 s2 에 Thanks for all the fish 를 저장하고 있다.
 
 그 후 v3 와 s2 를 비교한다.
 
+<br>
+
 s2 에 있는 문자열을 비교하는 데 사용하기 때문에
 
 Secret String 은 'Thanks for all the fish' 이다.
@@ -161,5 +168,7 @@ s2 에 적힌 문자열을 입력하면 Success! 가 뜨는 것을 볼 수 있�
 JNI 를 사용하여서 복잡한 문제였다.
 
 전에 배운 JNI 가 실제로 사용된 예시를 보니
+
+<br>
 
 어떻게 사용할 수 있는지 알 수 있어 좋았다.

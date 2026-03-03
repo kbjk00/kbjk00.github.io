@@ -4,7 +4,6 @@ date: 2025-11-09 21:03:35 +0900
 categories: [Projects, "모바일 분석"]
 tags: [모바일, 안드로이드, 팀프로젝트, 워게임]
 ---
-
 이번 글은 저번에 배운 Frida 를 활용하여 문제를 풀어보는 시간이다.
 
 나는 UnCrackable Mobile Apps 라는 문제를 풀어보았다.
@@ -18,6 +17,8 @@ UnCrackable Mobile Apps 는 Android, iOS 를 위한 모바일 애플리케이션
 다음 사이트에 접속하여 Android, iOS 디렉터리를 골라 문제를 풀 수 있다.
 
 <https://github.com/OWASP/mastg/tree/master/Crackmes>
+
+<br>
 
 [mastg/Crackmes at master · OWASP/mastg](https://github.com/OWASP/mastg/tree/master/Crackmes)
 
@@ -36,6 +37,8 @@ UnCrackable Mobile Apps 는 Android, iOS 를 위한 모바일 애플리케이션
 OK 를 누르면, 애플리케이션이 종료된다.
 
 다음으로 JADX 로 자세히 살펴보겠다.
+
+<br>
 
 ![](/assets/img/2025-11-09-모바일-애플리케이션-분석-6주차---UnCrackable-Level-1-Android/img_1.png)
 
@@ -107,6 +110,8 @@ c.a() : su 라는 파일이 있는지 확인
 
 c.b() : Build.TAGS 에 test-keys 가 있는지 확인
 
+<br>
+
 c.c() : 루팅과 관련있는 애플케이션을 확인
 
 ```
@@ -126,6 +131,8 @@ private void a(String str) {
 System.exit() 를 사용하여 종료하기 때문에
 
 이 함수를 호출하지 않도록 하면 루팅 탐지를 우회할 수 있다.
+
+<br>
 
 ```
 Java.perform(function () {
@@ -194,6 +201,8 @@ a.a() 함수를 사용하여 Secret String 을 확인하기 때문에
 
 a.a() 함수를 살펴보겠다.
 
+<br>
+
 ```
 public class a {
     public static boolean a(String str) {
@@ -252,6 +261,8 @@ AES 알고리즘을 사용하여 데이터를 복호화하는 함수이다.
 bArr 이 비밀키, bArr2 가 복호화할 데이터이다.
 
 다시 말해서, 여기서 복호화한 값이 사용자가 입력한 값과 일치하는지 비교한 후 결과 값을 리턴하는 것이다.
+
+<br>
 
 이제 Frida 코드를 이어서 작성해서 Secret String 을 확인해보겠다.
 
@@ -318,3 +329,5 @@ Frida 를 처음 사용해 보았는데
 애플리케이션이 켜진 상태에서 즉각적으로 반응한다는 것이 매우 신기하다.
 
 JS 코드를 사용하기 때문에 Frida 를 전문적으로 사용하려면 JS 코드 지식이 필수적이라고 생각한다.
+
+<br>

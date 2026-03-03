@@ -4,10 +4,12 @@ date: 2026-02-19 10:21:11 +0900
 categories: [Hacking]
 tags: ["web hacking"]
 ---
-
 ## 시작하며
 
 SQL Injection은 웹 애플리케이션의 입력 필드에 SQL 코드를 삽입하여 데이터베이스를 조작하는 공격 기법입니다. 이 글에서는 SQL Injection이 어떻게 동작하는지, 어떤 공격 기법이 있는지, 그리고 어떻게 방어하는지를 처음부터 끝까지 다룹니다.
+
+> ⚠️ 주의: 이 글에서 소개하는 기법은 본인이 소유하거나 명시적으로 허가받은 시스템에서만 사용해야 합니다.
+> 허가 없이 타인의 시스템에 사용하는 것은 불법입니다.
 
 ## 웹 로그인의 동작 원리
 
@@ -15,7 +17,7 @@ SQL Injection을 이해하려면 먼저 웹 로그인이 내부적으로 어떻�
 
 로그인 폼에 아이디와 비밀번호를 입력하고 로그인 버튼을 누르면, 웹 애플리케이션은 다음과 같은 과정을 거칩니다.
 
-```
+```text
 사용자가 입력한 아이디와 비밀번호를 백엔드(서버)로 전송
 백엔드에서 사용자 입력값을 SQL 쿼리(데이터베이스에 보내는 명령문)에 삽입
 데이터베이스가 해당 쿼리를 실행하여 일치하는 계정이 있는지 확인
@@ -24,7 +26,7 @@ SQL Injection을 이해하려면 먼저 웹 로그인이 내부적으로 어떻�
 
 이 과정에서 서버가 실행하는 SQL 쿼리는 보통 다음과 같은 형태입니다.
 
-```
+```sql
 SELECT * FROM accounts WHERE username = '입력한_아이디' AND password = '입력한_비밀번호'
 ```
 
@@ -39,7 +41,7 @@ SQL Injection이 가능한지 확인하는 가장 기본적인 방법은 입력 
 
 왜 그럴까요? 사용자가 입력한 따옴표가 쿼리 안의 문자열 경계를 깨뜨리기 때문입니다.
 
-```
+```sql
 -- 정상 입력: admin
 SELECT * FROM accounts WHERE username = 'admin' AND password = '1234'
 
@@ -57,7 +59,7 @@ SELECT * FROM accounts WHERE username = 'admin'' AND password = '1234'
 작은따옴표를 넣었는데 아무런 에러가 없다고 해서 취약점이 없는 것은 아닙니다.  
 쿼리가 **큰따옴표**로 문자열을 감싸고 있을 수도 있기 때문입니다.
 
-```
+```sql
 -- 큰따옴표를 사용하는 쿼리 예시
 SELECT * FROM accounts WHERE username = "admin" AND password = "1234"
 ```
@@ -72,26 +74,26 @@ SELECT * FROM accounts WHERE username = "admin" AND password = "1234"
 
 아이디 필드에 다음과 같이 입력합니다.
 
-```
+```sql
 ' OR 1=1 --
 ```
 
 그러면 서버에서 실행되는 쿼리는 다음과 같이 변합니다.
 
-```
+```sql
 SELECT * FROM accounts WHERE username = '' OR 1=1 -- ' AND password = '아무거나'
 ```
 
 이 쿼리에서 `--` 이후의 내용은 전부 주석 처리되어 무시됩니다. 따라서 데이터베이스가 실제로 실행하는 쿼리는 다음과 같습니다.
 
-```
+```sql
 -- 실제 실행되는 쿼리 (주석 이후 제거)
 SELECT * FROM accounts WHERE username = '' OR 1=1
 ```
 
 ### 왜 이 쿼리가 항상 성공할까?
 
-```
+```text
 `username = ''` → 빈 문자열과 일치하는 아이디가 있는가? → 보통 FALSE
 `OR 1=1` → 1은 1과 같은가? → 항상 TRUE
 ```
@@ -102,11 +104,13 @@ SELECT * FROM accounts WHERE username = '' OR 1=1
 
 쿼리가 큰따옴표를 사용하는 경우에는 작은따옴표 대신 큰따옴표를 사용하면 됩니다.
 
-```
+<br>
+
+```sql
 " OR 1=1 --
 ```
 
-```
+```sql
 -- 큰따옴표 기반 쿼리에서 실행되는 결과
 SELECT * FROM accounts WHERE username = "" OR 1=1 -- " AND password = "아무거나"
 ```
@@ -117,7 +121,7 @@ SELECT * FROM accounts WHERE username = "" OR 1=1 -- " AND password = "아무거
 
 아이디 필드에 다음과 같이 입력합니다.
 
-```
+```sql
 admin'--
 ```
 
@@ -129,13 +133,13 @@ admin'--
 
 서버에서 실행되는 쿼리는 다음과 같습니다.
 
-```
+```sql
 SELECT * FROM accounts WHERE username = 'admin'-- ' AND password = '아무거나'
 ```
 
 `--` 이후의 비밀번호 검증 부분이 전부 주석 처리됩니다. 데이터베이스가 실제로 실행하는 쿼리는 다음과 같습니다.
 
-```
+```sql
 -- 실제 실행되는 쿼리 (주석 이후 제거)
 SELECT * FROM accounts WHERE username = 'admin'
 ```
@@ -144,11 +148,11 @@ SELECT * FROM accounts WHERE username = 'admin'
 
 큰따옴표 기반 쿼리라면 페이로드도 큰따옴표로 바꿉니다.
 
-```
+```sql
 admin"--
 ```
 
-```
+```sql
 -- 큰따옴표 기반 쿼리에서 실행되는 결과
 SELECT * FROM accounts WHERE username = "admin"-- " AND password = "아무거나"
 ```
@@ -157,31 +161,31 @@ SELECT * FROM accounts WHERE username = "admin"-- " AND password = "아무거나
 
 앞의 두 기법이 인증 우회에 초점을 맞췄다면, UNION SELECT는 **데이터베이스의 다른 테이블에서 정보를 빼내는** 기법입니다.
 
-`UNION`은 SQL 문법으로, 두 개의 `SELECT` 문의 결과를 하나로 합쳐줍니다. 단, 두 `SELECT` 문의 컬럼(column) 개수가 일치해야 합니다.
-
-컬럼은 세로줄인 열을 말하는 것입니다.
+`UNION`은 SQL 문법으로, 두 개의 `SELECT` 문의 결과를 하나로 합쳐줍니다. 단, 두 `SELECT` 문의 컬럼(column) 개수와 데이터 타입이 일치해야 합니다.
 
 예를 들어, 웹사이트에서 URL 파라미터로 작가 번호를 받아 소개 글을 보여주는 페이지가 있다고 가정하겠습니다.
 
-```
+<br>
+
+```text
 https://example.com/author?id=1
 ```
 
 서버에서는 다음과 같은 쿼리가 실행됩니다.
 
-```
+```sql
 SELECT name, bio FROM authors WHERE id = 1
 ```
 
 이 `id` 파라미터에 UNION SELECT를 삽입하면, 원래 쿼리 결과에 다른 테이블의 데이터를 끼워 넣을 수 있습니다.
 
-```
+```text
 https://example.com/author?id=1 UNION SELECT username, password FROM accounts --
 ```
 
 서버에서 실행되는 쿼리는 다음과 같습니다.
 
-```
+```sql
 SELECT name, bio FROM authors WHERE id = 1
 UNION
 SELECT username, password FROM accounts --
@@ -191,7 +195,17 @@ SELECT username, password FROM accounts --
 
 UNION SELECT를 사용하려면 원래 쿼리의 컬럼 개수를 알아야 합니다. 컬럼 개수를 모르면 `UNION SELECT NULL, NULL, NULL...`처럼 NULL을 하나씩 늘려가며 에러가 나지 않는 개수를 찾습니다.
 
-다른 방법으로는
+다른 방법으로는 `ORDER BY`를 이용하는 방법이 있습니다. `ORDER BY`는 특정 컬럼을 기준으로 결과를 정렬하는 SQL 문법인데, 컬럼 번호를 숫자로 지정할 수 있습니다.
+
+<br>
+
+```text
+https://example.com/author?id=1 ORDER BY 1--
+https://example.com/author?id=1 ORDER BY 2--
+https://example.com/author?id=1 ORDER BY 3--
+```
+
+숫자를 1부터 하나씩 늘려가다가 에러가 발생하는 순간, 그 직전 숫자가 컬럼 개수입니다. 예를 들어 ORDER BY 3에서 에러가 나면 컬럼이 2개라는 뜻입니다.
 
 ## SQL Injection 방어 방법
 
@@ -201,7 +215,7 @@ SQL Injection은 오래된 공격이지만 매우 위험한 공격 중 하나입
 
 가장 효과적인 방어 방법입니다. 사용자 입력을 쿼리의 일부로 해석하지 않고, 별도의 파라미터로 전달합니다.
 
-```
+```python
 # 취약한 코드 (절대 사용 금지)
 query = f"SELECT * FROM accounts WHERE username = '{user_input}'"
 
@@ -218,7 +232,7 @@ cursor.execute(query, (user_input,))
 
 사용자 입력에 허용할 문자를 미리 정의하고, 그 외의 문자를 거부하는 방식입니다.
 
-```
+```python
 import re
 
 # 허용 목록(Allow List) 방식: 영문, 숫자만 허용
@@ -254,6 +268,8 @@ Blind SQL Injection은 두 가지 방식으로 나뉩니다.
 
 - **Boolean-based Blind**: 참/거짓에 따라 웹 페이지의 응답이 달라지는 것을 이용합니다. 예를 들어 조건이 참이면 정상 페이지가, 거짓이면 빈 페이지가 표시되는 차이를 관찰하여 한 글자씩 데이터를 추론합니다.
 - **Time-based Blind**: `SLEEP(5)` 같은 시간 지연 함수를 삽입하여, 조건이 참일 때 응답이 5초 늦어지는지 확인하는 방식입니다. 응답 페이지에 아무런 차이가 없어도 공격이 가능합니다.
+
+<br>
 
 ## 마치며
 

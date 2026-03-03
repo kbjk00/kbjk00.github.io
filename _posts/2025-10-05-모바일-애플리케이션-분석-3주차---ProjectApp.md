@@ -4,12 +4,13 @@ date: 2025-10-05 16:03:23 +0900
 categories: [Projects, "모바일 분석"]
 tags: [리버싱, 팀프로젝트, 워게임, "write up", "모바일 분석"]
 ---
-
 apk 파일을 분석하기 위해서 JADX 를 사용하였다.
 
 만약 설치되어 있지 않다면, 1주차 환경설정 블로그를 보고 오기를 추천한다.
 
 <https://sec-ret.tistory.com/1>
+
+<br>
 
 [[모바일 애플리케이션 분석] 1주차 - 환경 설정](https://sec-ret.tistory.com/1)
 
@@ -22,6 +23,8 @@ apk 파일을 이용해, 애플리케이션을 설치한 후 실행하였다.
 터미널에서 설치하고자 하는 apk 파일이 있는 경로로 이동한다.
 
 그 후 adb install app\_name.apk 형식으로 입력을 하면 설치가 된다.
+
+<br>
 
 ```
 PS D:\My_Projects\Mobile_Analysis\WarGame\ProjectApp.apk> adb install ProjectApp.apk
@@ -36,6 +39,8 @@ ProjectApp 실행 모습
 이 애플리케이션은 입력을 할 수 있는 창과
 
 SERIAL CHECK 라는 버튼이 있다.
+
+<br>
 
 올바른 시리얼을 입력하면 플래그를 출력하는 애플리케이션으로 추측한다.
 
@@ -67,6 +72,8 @@ com.ctf.projectapp.MainActivity 에서 시작한다는 것을 알았다.
 
 이 경로로 가서 MainAcitivity 코드를 살펴보도록 하자.
 
+<br>
+
 ```
 public void checkSerial() {
         if (decodeSecret().equals(this.serialEditText.getText().toString())) {
@@ -83,6 +90,8 @@ public void checkSerial() {
 
 올바른 시리얼이 아니면 Incorrect! 를 출력한다.
 
+<br>
+
 if 문의 조건을 자세히 살펴보면,
 
 ```
@@ -94,6 +103,8 @@ decodeSecret() 과 getText() 를 비교하고 있다.
 getText() 는 사용자가 입력하는 시리얼 일테니
 
 decodeSecret() 에 담긴 값이 올바른 시리얼일 것이다.
+
+<br>
 
 ```
 private String decodeSecret() throws Resources.NotFoundException, IOException {
@@ -116,6 +127,8 @@ R 은 resource 이기 때문에 리소스에서 raw 로 들어가면 secret.txt 
 
 ※ com.ctf.projectapp 에 있는 R 에 들어가는 것이 아니다.
 
+<br>
+
 ---
 
 ## 애플리케이션 실행 후 플래그 확인
@@ -129,6 +142,8 @@ secret.txt 에 적힌 값이다.
 decodeSecret() 은 이 값을 디코딩한 것이기 때문에
 
 이 값을 디코딩한 값이 플래그이고 입력 시 Correct! 를 출력할 것이다.
+
+<br>
 
 ![](/assets/img/2025-10-05-모바일-애플리케이션-분석-3주차---ProjectApp/img_1.png)
 
@@ -146,8 +161,12 @@ Correct! 를 출력함으로
 
 만약, 계속 오류가 생긴다면 터미널에서 설치하는 것을 권장한다.
 
+<br>
+
 또한 JADX 를 처음으로 열었을 때,
 
 내 생각보다 많은 폴더들이 있어서 내가 원하는 코드를 보기가 찾기가 힘들었다.
 
 시작점을 먼저 찾은 후 분석을 하는 것을 매우 권장한다.
+
+<br>
