@@ -5,7 +5,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 import markdownify as md_lib
 
-BACKUP_DIR = Path("TistoryBackup")
+BACKUP_DIR = Path("../sec-ret-1-1-article1-25/sec-ret-1-1")
 POSTS_DIR = Path("_posts")
 IMAGES_DIR = Path("assets/img")
 
@@ -55,14 +55,17 @@ def parse_tags(tags_text):
     return tags
 
 
-def preprocess_content(content_div, date_str, slug):
+def preprocess_content(content_div, date_str, slug, soup):
     # 1. opengraph 카드 → 일반 링크로 변환
-    for fig in content_div.find_all("figure", attrs={"data-ke-type": "opengraph"}):
+    for fig in list(content_div.find_all("figure", attrs={"data-ke-type": "opengraph"})):
         url = fig.get("data-og-source-url", "")
         title = fig.get("data-og-title", url).replace("\xa0", " ").strip()
         if url:
-            new_tag = BeautifulSoup(f'<p><a href="{url}">{title}</a></p>', "html.parser")
-            fig.replace_with(new_tag)
+            p_tag = soup.new_tag("p")
+            a_tag = soup.new_tag("a", href=url)
+            a_tag.string = title
+            p_tag.append(a_tag)
+            fig.replace_with(p_tag)
         else:
             fig.decompose()
 
@@ -128,7 +131,7 @@ def convert_post(folder_num):
     html_file = html_files[0]
 
     with open(html_file, "r", encoding="utf-8") as f:
-        soup = BeautifulSoup(f.read(), "html.parser")
+        soup = BeautifulSoup(f.read(), "lxml")
 
     title_el = soup.find("h2", class_="title-article")
     date_el = soup.find("p", class_="date")
@@ -163,7 +166,7 @@ def convert_post(folder_num):
         print(f"  [ERROR] 폴더 {folder_num}: 본문 없음")
         return None
 
-    preprocess_content(content_div, date_str, slug)
+    preprocess_content(content_div, date_str, slug, soup)
     markdown_content = to_markdown(content_div)
 
     # title 따옴표 이스케이프
