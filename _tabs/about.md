@@ -27,9 +27,9 @@ order: 4
 
 <br>
 
-**`Hacking`**에서는 Web Hacking, Pwnable, Reversing, Digital Forensics등 여러 분야의 보안 지식을 탐구합니다.
-    * 🔴 **Red**: 공격 관점의 침투 테스트와 취약점 분석을 다룹니다.
-    * 🔵 **Blue**: 시스템을 보호하고 공격을 방어하는 보안 관제 및 대응을 다룹니다.
+**`Hacking`**에서는 `Web Hacking`, `Pwnable`, `Reversing`, `Digital Forensics`등 여러 분야의 보안 지식을 탐구합니다.
+- 🔴 **Red**: 공격 관점의 침투 테스트와 취약점 분석을 다룹니다.
+- 🔵 **Blue**: 시스템을 보호하고 공격을 방어하는 보안 관제 및 대응을 다룹니다.
 
 <br>
 
