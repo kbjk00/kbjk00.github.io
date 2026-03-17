@@ -1,7 +1,7 @@
 ---
 title: "SQL Injection은 뭐야? [Web Hacking]"
 date: 2026-02-19 10:21:11 +0900
-categories: [Hacking, Red, "Web Hacking"]
+categories: [Hacking, Red]
 tags: ["web hacking"]
 ---
 ## 시작하며
