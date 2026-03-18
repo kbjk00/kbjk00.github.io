@@ -1,5 +1,5 @@
 ---
-title: "Cookie & Session은 뭐야? [Web Hacking]"
+title: "Cookie & Session은 뭐야?"
 date: 2026-03-16 10:00:00 +0900
 categories: ["Pre Security", "Network"]
 tags: ["web", "cookie", "session"]
