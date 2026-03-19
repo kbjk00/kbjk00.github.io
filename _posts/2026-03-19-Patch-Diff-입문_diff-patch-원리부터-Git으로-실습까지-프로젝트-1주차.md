@@ -1,0 +1,371 @@
+---
+title: "Patch Diff 입문 — diff/patch 원리부터 Git으로 실습까지"
+date: 2026-03-19 12:00:00 +0900
+categories: [Projects, "취약점 분석 및 서비스 보안 개선"]
+tags: [patch, diff, git, project, 1day]
+---
+
+## 시작하며
+
+지난 글에서 OWASP TOP10으로 웹 취약점의 전체 지형을 파악했다. 이번 글에서는 1day 취약점을 실제로 분석할 때 쓰는 핵심 도구인 **Patch Diff**를 다룬다.
+
+<br>
+
+취약점이 어떻게 수정됐는지 보려면 수정 전후 코드의 차이를 읽어야 한다. 그 차이를 표현하고 주고받는 형식이 바로 Patch Diff다. 이 글을 읽으면 Unified Diff 포맷을 직접 읽고, `git diff`의 3가지 모드를 구분하고, 변경사항을 패치 파일로 주고받을 수 있게 된다.
+
+<br>
+
+## Patch Diff란?
+
+**diff**는 두 파일(또는 디렉토리)의 차이를 찾아내는 프로그램이다.
+**patch**는 그 차이를 실제 파일에 적용하는 프로그램이다.
+
+<br>
+
+이 두 도구는 1970년대 초 벨 연구소(Bell Labs)에서 Unix 운영체제를 개발하던 시절에 만들어졌다. 소스 코드를 이메일로 주고받던 시대에, "파일 전체"가 아닌 "바뀐 부분만" 전달하기 위해 탄생한 것이다.
+
+<br>
+
+지금도 오픈소스 프로젝트 기여, 코드 리뷰, `git diff` 기반 Git 워크플로우의 핵심에 이 개념이 그대로 살아있다.
+
+<br>
+
+## Unified Diff 포맷 읽는 법
+
+diff를 실행하면 출력되는 형식을 **Unified Diff 포맷**이라고 한다. `-u` 옵션을 쓸 때 이 형식이 나오며, 가장 널리 사용되는 표준이다.
+
+<br>
+
+아래 예시를 보자. `hello.c` 파일에서 `printf("Hello World");`에 줄바꿈(`\n`)을 추가한 변경이다.
+
+<br>
+
+```c
+// hello_v1/hello.c (수정 전)
+int main() {
+    printf("Hello World");
+    return 0;
+}
+
+// hello_v2/hello.c (수정 후)
+int main() {
+    printf("Hello World\n");   // \n 추가
+    return 0;
+}
+```
+
+<br>
+
+이 변경사항을 diff로 출력하면:
+
+<br>
+
+```diff
+--- hello_v1/hello.c    2026-03-19 13:37:24
++++ hello_v2/hello.c    2026-03-19 13:38:58
+@@ -1,4 +1,4 @@
+ int main() {
+-    printf("Hello World");
++    printf("Hello World\n");
+     return 0;
+ }
+```
+
+<br>
+
+각 기호의 의미는 다음과 같다.
+
+<br>
+
+| 기호 | 의미 |
+|------|------|
+| `--- a/파일명` | 변경 **이전** 파일 |
+| `+++ b/파일명` | 변경 **이후** 파일 |
+| `@@ -1,4 +1,4 @@` | **Hunk 헤더** |
+| `-` 로 시작하는 줄 | **삭제된** 줄 |
+| `+` 로 시작하는 줄 | **추가된** 줄 |
+| ` ` (공백)으로 시작하는 줄 | 변경 없는 **컨텍스트** 줄 |
+
+<br>
+
+**Hunk 헤더 읽는 법**
+
+`@@ -1,4 +1,4 @@` 에서 `-1,4`는 "이전(before) 파일 기준 1번째 줄부터 4줄", `+1,4`는 "이후(after) 파일 기준 1번째 줄부터 4줄"을 의미한다. `-`는 변경 전, `+`는 변경 후 파일에서 이 변경이 각각 어느 위치에 있는지를 함께 보여주는 것이다. 추가·삭제 줄 수가 같으면 두 숫자가 같게 보일 수 있다.
+
+<br>
+
+## 전통 diff & patch 실습
+
+위의 `hello_v1/hello.c`와 `hello_v2/hello.c` 파일 구조로 실습해 보자.
+
+<br>
+
+### 패치 파일 만들기
+
+두 디렉토리(또는 파일)를 비교해서 패치 파일을 생성한다.
+
+<br>
+
+```bash
+diff -u hello_v1 hello_v2 > hello.patch
+```
+
+<br>
+
+옵션 설명:
+- `-u`: Unified 포맷으로 출력 (가장 널리 쓰이는 형식)
+- `>`: 출력 결과를 파일로 저장
+
+<br>
+
+디렉토리 전체를 비교할 때는 `-r`(재귀)과 `-N`(새 파일 포함) 옵션을 추가한다.
+
+<br>
+
+```bash
+diff -urN project.orig project > project.patch
+```
+
+<br>
+
+### 패치 파일 적용하기
+
+생성된 패치를 원본 파일에 적용한다.
+
+<br>
+
+```bash
+patch -p1 < hello.patch
+```
+
+<br>
+
+`-p` 옵션은 패치 파일 안의 경로에서 제거할 디렉토리 단계 수를 지정한다.
+
+<br>
+
+| 옵션 | 의미 | 패치 파일 내부 경로 기준 예시 |
+|------|------|------|
+| `-p0` | 경로 그대로 사용 | `a/src/hello.c` → `a/src/hello.c` |
+| `-p1` | 첫 번째 디렉토리 제거 | `a/src/hello.c` → `src/hello.c` |
+| `-p2` | 두 번째 디렉토리까지 제거 | `a/src/hello.c` → `hello.c` |
+
+<br>
+
+`-d <디렉토리>` 옵션으로 패치를 적용할 대상 경로를 직접 지정할 수도 있다.
+
+<br>
+
+```bash
+patch -d hello_v1/ -p1 < hello.patch
+```
+
+<br>
+
+소스 파일이 패치 파일과 버전이 다를 경우 적용에 실패한 부분이 `.rej` 파일로 남는다. 적용 후 `.rej` 파일이 생성되지 않으면 성공이다.
+
+<br>
+
+## Git diff 3가지 모드
+
+Git에는 **3개의 영역**이 있다.
+
+<br>
+
+```text
+작업 디렉토리(Working Directory) → 스테이징 영역(Staging Area) → 커밋(Commit/HEAD)
+```
+
+<br>
+
+`git diff`는 이 세 영역 중 **어느 두 영역을 비교하느냐**에 따라 세 가지 모드로 나뉜다.
+
+<br>
+
+### 모드 1: git diff (unstaged 변경사항)
+
+```bash
+git diff
+```
+
+<br>
+
+**작업 디렉토리** vs **스테이징 영역** 비교. 아직 `git add`하지 않은 변경사항을 보여준다.
+
+<br>
+
+파일을 수정했지만 `git add`를 하지 않은 상태에서 실행하면 변경사항이 나타난다. `git add` 후 실행하면 아무것도 나오지 않는다 — 이미 스테이징 영역에 올라갔기 때문이다.
+
+<br>
+
+### 모드 2: git diff --staged (staged 변경사항)
+
+```bash
+git diff --staged
+# 또는
+git diff --cached
+```
+
+<br>
+
+**스테이징 영역** vs **마지막 커밋(HEAD)** 비교. `git add`로 올린 변경사항, 즉 다음 커밋에 포함될 내용을 미리 확인할 때 쓴다.
+
+<br>
+
+`--cached`와 `--staged`는 완전히 동일한 동작을 한다. `--cached`가 예전부터 있던 플래그이고, `--staged`는 나중에 추가된 더 직관적인 이름이다. 둘 다 현재 공식 지원 중이다.
+
+<br>
+
+### 모드 3: git diff HEAD (전체 변경사항)
+
+```bash
+git diff HEAD
+```
+
+<br>
+
+**작업 디렉토리** vs **마지막 커밋** 비교. `git add`를 했든 안 했든, 마지막 커밋 이후 변경된 모든 내용이 한 번에 출력된다. staged 변경사항과 unstaged 변경사항을 구분하지 않고 전체를 확인하고 싶을 때 유용하다.
+
+<br>
+
+세 모드를 표로 정리하면:
+
+<br>
+
+| 명령어 | 비교 대상 | 확인하는 것 |
+|--------|-----------|------------|
+| `git diff` | 작업 디렉토리 ↔ 스테이징 | unstaged 변경사항 |
+| `git diff --staged` | 스테이징 ↔ HEAD | staged 변경사항 (다음 커밋 내용) |
+| `git diff HEAD` | 작업 디렉토리 ↔ HEAD | staged + unstaged 전체 변경사항 |
+
+<br>
+
+### 유용한 추가 옵션
+
+**커밋 간 비교**
+
+```bash
+git diff <커밋1> <커밋2>
+git diff HEAD~1 HEAD    # 마지막 두 커밋 비교
+```
+
+> `HEAD^`도 동일하지만 Zsh 환경에서 `^`를 특수문자로 인식해 오류가 날 수 있다.
+
+<br>
+
+**단어 단위 diff (`--word-diff`)**
+
+라인 전체가 아닌 바뀐 단어만 정확히 보여준다. 긴 줄에서 작은 변경사항을 찾을 때 유용하다.
+
+```bash
+git diff --word-diff
+```
+
+<br>
+
+출력 예시: `[-삭제된 단어-]`와 `{+추가된 단어+}` 형태로 인라인 표시된다.
+
+<br>
+
+**변경 요약 (`--stat`)**
+
+어떤 파일이 얼마나 바뀌었는지 한 눈에 파악할 수 있다.
+
+```bash
+git diff --stat
+```
+
+<br>
+
+```text
+README.md | 3 ++-
+1 file changed, 2 insertions(+), 1 deletion(-)
+```
+
+<br>
+
+## Git으로 패치 만들고 적용하기
+
+Git에서도 변경사항을 `.patch` 파일로 저장하고, 다른 환경에서 그대로 적용할 수 있다.
+
+<br>
+
+### 패치 파일 생성
+
+```bash
+git diff > mypatch.patch
+```
+
+<br>
+
+현재 unstaged 변경사항을 `mypatch.patch` 파일로 저장한다. 파일 안에는 Unified Diff 포맷으로 각 줄의 추가·삭제 내용이 담긴다.
+
+<br>
+
+staged 변경사항까지 포함해 마지막 커밋 이후 전체 변경사항을 저장하려면:
+
+```bash
+git diff HEAD > mypatch.patch
+```
+
+<br>
+
+### 패치 파일 적용
+
+```bash
+git apply mypatch.patch
+```
+
+<br>
+
+패치를 실제로 적용하기 전에 적용 가능 여부를 먼저 확인할 수 있다.
+
+```bash
+git apply --check mypatch.patch
+```
+
+<br>
+
+오류 없이 통과되면 실제 `git apply`를 실행하면 된다.
+
+<br>
+
+### format-patch / git am (심화)
+
+커밋 자체를 패치로 만들고 싶을 때는 `git format-patch`를 사용한다. 단순한 diff가 아니라 커밋 메시지, 작성자 정보까지 포함된 이메일 형식의 패치 파일이 생성된다.
+
+<br>
+
+```bash
+git format-patch HEAD~3    # 최근 3개 커밋을 패치 파일로
+git am patch.patch         # format-patch로 만든 패치 적용
+```
+
+<br>
+
+오픈소스 프로젝트에서 패치를 이메일로 주고받던 방식이 이것이다. `git diff > patch`와 달리 커밋 히스토리까지 함께 전달된다는 점이 다르다.
+
+<br>
+
+## 정리
+
+| 명령어 | 역할 |
+|--------|------|
+| `diff -u A B > file.patch` | 두 파일/디렉토리 차이를 패치 파일로 저장 |
+| `patch -p1 < file.patch` | 패치 파일을 소스에 적용 |
+| `git diff` | 작업 디렉토리의 unstaged 변경사항 확인 |
+| `git diff --staged` | 스테이징된 변경사항 확인 (다음 커밋 내용) |
+| `git diff HEAD` | 마지막 커밋 이후 전체 변경사항 확인 |
+| `git diff --word-diff` | 단어 단위로 정밀하게 변경사항 확인 |
+| `git diff > file.patch` | Git 변경사항을 패치 파일로 저장 |
+| `git apply file.patch` | Git 패치 파일 적용 |
+
+<br>
+
+## 마치며
+
+diff와 patch는 50년이 넘은 도구지만, Git의 핵심 기능이 이 위에 설계되어 있다. Unified Diff 포맷을 읽을 수 있으면 GitHub의 PR 화면이나 코드 리뷰도 한결 더 명확하게 보인다.
+
+<br>
+
+다음 글에서는 웹 취약점 분석 보고서 작성법을 다룰 예정이다.
