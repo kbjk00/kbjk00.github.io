@@ -1,5 +1,5 @@
 ---
-title: "IP 주소와 MAC 주소, 뭐가 다를까?"
+title: "IP 주소와 MAC 주소는 뭐야?"
 date: 2026-03-24 13:00:00 +0900
 categories: ["Pre Security", "Network"]
 tags: ["network", "ip", "mac", "ipv4", "ipv6", "spoofing"]
